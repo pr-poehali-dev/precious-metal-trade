@@ -467,7 +467,6 @@ const Index = () => {
               <div className="grid grid-cols-2 gap-6">
                 {[
                   { num: "15+", label: "Лет на рынке" },
-                  { num: "2 400+", label: "Клиентов" },
                   { num: "₽ 3 млрд", label: "Объём сделок" },
                   { num: "2", label: "Металла в каталоге" },
                 ].map(s => (
