@@ -145,9 +145,9 @@ const Index = () => {
       <header className="bg-white border-b border-[#ede8df] sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <button onClick={() => setActive("home")} className="text-left">
-            <div className="leading-none">
-              <span className="font-display text-2xl text-[#1A1410] tracking-tight block">Мистер</span>
-              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-xl text-[#A07830]">Золотов</span>
+            <div className="flex items-baseline gap-2 leading-none">
+              <span className="font-display text-2xl text-[#1A1410] tracking-tight">Мистер</span>
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-2xl text-[#A07830]">Золотов</span>
             </div>
           </button>
           <nav className="hidden md:flex items-center gap-8">
