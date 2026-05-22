@@ -145,7 +145,7 @@ const Index = () => {
       <header className="bg-white border-b border-[#ede8df] sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <button onClick={() => setActive("home")} className="text-left">
-            <span className="font-display text-2xl text-[#1A1410] tracking-tight">Золотов</span>
+            <span className="font-display text-2xl text-[#1A1410] tracking-tight">Мистер Золотов</span>
           </button>
           <nav className="hidden md:flex items-center gap-8">
             {nav.map(n => (
@@ -459,7 +459,7 @@ const Index = () => {
                 Экспертиза в<br />мире металлов
               </h1>
               <p className="font-body text-[#6b5e52] leading-relaxed mb-6">
-                Золотов — профессиональный дилер драгоценных металлов с многолетним опытом работы на российском рынке. Специализируемся на инвестиционных слитках и монетах высшей пробы.
+                Мистер Золотов — профессиональный дилер драгоценных металлов с многолетним опытом работы на российском рынке. Специализируемся на инвестиционных слитках и монетах высшей пробы.
               </p>
               <p className="font-body text-[#6b5e52] leading-relaxed mb-8">
                 Каждая сделка сопровождается полным пакетом документов и сертификатами происхождения. Работаем с частными инвесторами, корпоративными клиентами и финансовыми учреждениями.
@@ -578,9 +578,9 @@ const Index = () => {
       <footer className="bg-[#1A1410] border-t border-[#2a2018] py-10 mt-auto">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <span className="font-display text-xl text-white">Золотов</span>
+            <span className="font-display text-xl text-white">Мистер Золотов</span>
           </div>
-          <p className="font-body text-xs text-[#6b5e52] tracking-wider">© 2024 Золотов. Все права защищены.</p>
+          <p className="font-body text-xs text-[#6b5e52] tracking-wider">© 2024 Мистер Золотов. Все права защищены.</p>
           <div className="flex gap-6">
             {nav.map(n => (
               <button
