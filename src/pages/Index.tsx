@@ -144,12 +144,7 @@ const Index = () => {
       {/* Header */}
       <header className="bg-white border-b border-[#ede8df] sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button onClick={() => setActive("home")} className="text-left flex items-center gap-3">
-            <div className="w-9 h-9 bg-[#1A1410] flex items-center justify-center flex-shrink-0">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <polygon points="10,2 12.5,8 19,8 13.5,12 15.5,18 10,14 4.5,18 6.5,12 1,8 7.5,8" fill="#C8A050"/>
-              </svg>
-            </div>
+          <button onClick={() => setActive("home")} className="text-left">
             <div className="leading-none">
               <span className="font-display text-2xl text-[#1A1410] tracking-tight block">Мистер</span>
               <span className="font-body text-[10px] tracking-[0.3em] text-[#A07830] uppercase">Золотов</span>
