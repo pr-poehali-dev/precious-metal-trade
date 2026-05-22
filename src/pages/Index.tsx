@@ -147,7 +147,7 @@ const Index = () => {
           <button onClick={() => setActive("home")} className="text-left">
             <div className="leading-none">
               <span className="font-display text-2xl text-[#1A1410] tracking-tight block">Мистер</span>
-              <span className="font-body text-[10px] tracking-[0.3em] text-[#A07830] uppercase">Золотов</span>
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-xl text-[#A07830]">Золотов</span>
             </div>
           </button>
           <nav className="hidden md:flex items-center gap-8">
