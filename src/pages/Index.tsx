@@ -28,32 +28,6 @@ const METALS = [
     minWeight: "10 г",
     chartPoints: [100, 98, 102, 99, 97, 95, 96, 94, 93, 92, 92],
   },
-  {
-    id: "platinum",
-    name: "Платина",
-    symbol: "XPT",
-    price: 3124.80,
-    change: +0.82,
-    unit: "за грамм",
-    img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/35721be2-bcf0-4960-95df-989eebdc646d.jpg",
-    desc: "Платина 950 пробы. Редкий металл для серьёзных инвесторов.",
-    purity: "950",
-    minWeight: "5 г",
-    chartPoints: [95, 97, 96, 98, 100, 99, 101, 103, 102, 104, 105],
-  },
-  {
-    id: "palladium",
-    name: "Палладий",
-    symbol: "XPD",
-    price: 5680.20,
-    change: +2.14,
-    unit: "за грамм",
-    img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/35721be2-bcf0-4960-95df-989eebdc646d.jpg",
-    desc: "Палладий 999.5 пробы. Один из самых ценных металлов платиновой группы.",
-    purity: "999.5",
-    minWeight: "5 г",
-    chartPoints: [80, 85, 82, 88, 86, 90, 92, 91, 95, 98, 102],
-  },
 ];
 
 function MiniChart({ points, up }: { points: number[]; up: boolean }) {
@@ -495,7 +469,7 @@ const Index = () => {
                   { num: "15+", label: "Лет на рынке" },
                   { num: "2 400+", label: "Клиентов" },
                   { num: "₽ 3 млрд", label: "Объём сделок" },
-                  { num: "4", label: "Металла в каталоге" },
+                  { num: "2", label: "Металла в каталоге" },
                 ].map(s => (
                   <div key={s.label} className="border-l-2 border-[#A07830] pl-4">
                     <p className="font-display text-3xl text-[#1A1410]">{s.num}</p>
