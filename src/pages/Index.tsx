@@ -103,13 +103,42 @@ const Index = () => {
   const [selectedMetal, setSelectedMetal] = useState(METALS[0]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [prices, setPrices] = useState(METALS.map(m => m.price));
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState("");
+  const [manualPrices, setManualPrices] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrices(prev => prev.map(p => +(p * (1 + (Math.random() - 0.5) * 0.002)).toFixed(2)));
+      setPrices(prev => prev.map((p, i) => {
+        const metal = METALS[i];
+        if (manualPrices[metal.id] !== undefined) return manualPrices[metal.id];
+        return +(p * (1 + (Math.random() - 0.5) * 0.002)).toFixed(2);
+      }));
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [manualPrices]);
+
+  const startEdit = (metalId: string, currentPrice: number) => {
+    setEditingId(metalId);
+    setEditValue(String(currentPrice));
+  };
+
+  const savePrice = (metalId: string, index: number) => {
+    const val = parseFloat(editValue.replace(",", "."));
+    if (!isNaN(val) && val > 0) {
+      setManualPrices(prev => ({ ...prev, [metalId]: val }));
+      setPrices(prev => prev.map((p, i) => i === index ? val : p));
+    }
+    setEditingId(null);
+  };
+
+  const resetPrice = (metalId: string) => {
+    setManualPrices(prev => {
+      const next = { ...prev };
+      delete next[metalId];
+      return next;
+    });
+  };
 
   const nav: { key: Section; label: string }[] = [
     { key: "home", label: "Главная" },
@@ -357,13 +386,78 @@ const Index = () => {
                     </span>
                   </div>
                   <p className="font-body text-sm text-[#6b5e52] leading-relaxed mb-6">{m.desc}</p>
-                  <div className="grid grid-cols-3 gap-3 mb-6">
+
+                  {/* Цена с редактированием */}
+                  <div className="border border-[#ede8df] p-4 mb-4 bg-[#faf9f7]">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="font-body text-xs text-[#9e9080] tracking-wider uppercase">Цена за грамм</p>
+                      <div className="flex items-center gap-2">
+                        {manualPrices[m.id] !== undefined && (
+                          <button
+                            onClick={() => resetPrice(m.id)}
+                            className="font-body text-xs text-[#9e9080] hover:text-red-500 transition-colors"
+                            title="Сбросить к авто"
+                          >
+                            Сбросить
+                          </button>
+                        )}
+                        {editingId !== m.id && (
+                          <button
+                            onClick={() => startEdit(m.id, prices[i])}
+                            className="flex items-center gap-1 font-body text-xs text-[#A07830] hover:text-[#8a6428] transition-colors"
+                          >
+                            <Icon name="Pencil" size={12} />
+                            Изменить
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {editingId === m.id ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          autoFocus
+                          type="number"
+                          value={editValue}
+                          onChange={e => setEditValue(e.target.value)}
+                          onKeyDown={e => {
+                            if (e.key === "Enter") savePrice(m.id, i);
+                            if (e.key === "Escape") setEditingId(null);
+                          }}
+                          className="flex-1 border border-[#A07830] bg-white px-3 py-2 font-display text-2xl text-[#1A1410] focus:outline-none"
+                        />
+                        <span className="font-display text-xl text-[#9e9080]">₽</span>
+                        <button
+                          onClick={() => savePrice(m.id, i)}
+                          className="bg-[#A07830] text-white px-3 py-2 font-body text-xs tracking-wider hover:bg-[#8a6428] transition-colors"
+                        >
+                          ОК
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="border border-[#ede8df] px-3 py-2 font-body text-xs text-[#9e9080] hover:border-[#9e9080] transition-colors"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-baseline gap-2">
+                        <p className="font-display text-3xl text-[#1A1410]">
+                          {prices[i].toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                        </p>
+                        {manualPrices[m.id] !== undefined && (
+                          <span className="font-body text-xs text-[#A07830] tracking-wider">● вручную</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 mb-6">
                     {[
                       { label: "Проба", value: m.purity },
-                      { label: "От", value: m.minWeight },
-                      { label: "Цена", value: `${prices[i].toLocaleString("ru-RU")} ₽/г` },
+                      { label: "Мин. вес", value: m.minWeight },
                     ].map(s => (
-                      <div key={s.label} className="bg-[#faf9f7] p-3 text-center">
+                      <div key={s.label} className="bg-[#faf9f7] p-3 text-center border border-[#ede8df]">
                         <p className="font-body text-xs text-[#9e9080] mb-1">{s.label}</p>
                         <p className="font-body text-sm font-medium text-[#1A1410]">{s.value}</p>
                       </div>
