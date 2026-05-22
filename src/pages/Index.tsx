@@ -547,7 +547,7 @@ const Index = () => {
               <div className="flex flex-col gap-6">
                 {[
                   { icon: "MapPin", title: "Адрес", value: "Комсомольский проспект, 7с2" },
-                  { icon: "Phone", title: "Телефон", value: "+7 (495) 000-00-00" },
+                  { icon: "Phone", title: "Телефон", value: "+7 (903) 711-82-28" },
                   { icon: "Mail", title: "Email", value: "info@aurummetall.ru" },
                   { icon: "Clock", title: "Часы работы", value: "Пн–Пт: 9:00–18:00" },
                 ].map(c => (
