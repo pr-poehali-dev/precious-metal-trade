@@ -546,7 +546,7 @@ const Index = () => {
               <h2 className="font-display text-3xl text-[#1A1410] mb-8">Реквизиты</h2>
               <div className="flex flex-col gap-6">
                 {[
-                  { icon: "MapPin", title: "Адрес", value: "Москва, ул. Ильинка, 4, офис 301" },
+                  { icon: "MapPin", title: "Адрес", value: "Комсомольский проспект, 7с2" },
                   { icon: "Phone", title: "Телефон", value: "+7 (495) 000-00-00" },
                   { icon: "Mail", title: "Email", value: "info@aurummetall.ru" },
                   { icon: "Clock", title: "Часы работы", value: "Пн–Пт: 9:00–18:00" },
