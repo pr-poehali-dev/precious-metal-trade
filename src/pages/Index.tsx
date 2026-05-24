@@ -366,9 +366,9 @@ const Index = () => {
 
       {/* CATALOG */}
       {active === "catalog" && (
-        <main className="max-w-6xl mx-auto px-6 py-16">
-          <div className="mb-12">
-            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Наши товары</p>
+        <main className="max-w-6xl mx-auto px-6 py-20">
+          <div className="border-b border-[#ede8df] mb-12 pb-8">
+            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Наши товары</p>
             <h1 className="font-display text-5xl text-[#1A1410]">Каталог металлов</h1>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -488,28 +488,46 @@ const Index = () => {
 
       {/* ABOUT */}
       {active === "about" && (
-        <main>
-          <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
+        <main className="max-w-6xl mx-auto px-6 py-20">
+          <div className="border-b border-[#ede8df] mb-12 pb-8">
+            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">О компании</p>
+            <h1 className="font-display text-5xl text-[#1A1410]">Экспертиза в мире металлов</h1>
+          </div>
+          <section className="grid md:grid-cols-2 gap-16 items-start">
             <div>
-              <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-4">О компании</p>
-              <h1 className="font-display text-6xl text-[#1A1410] leading-tight mb-6">
-                Экспертиза в<br />мире металлов
-              </h1>
-              <p className="font-body text-[#6b5e52] leading-relaxed mb-6">
+              <p className="font-body text-[#6b5e52] leading-relaxed mb-6 text-base">
                 Золотов — профессиональный дилер драгоценных металлов с многолетним опытом работы на российском рынке. Специализируемся на инвестиционных слитках и монетах высшей пробы.
               </p>
               <p className="font-body text-[#6b5e52] leading-relaxed mb-8">
                 Каждая сделка сопровождается полным пакетом документов и сертификатами происхождения. Работаем с частными инвесторами, корпоративными клиентами и финансовыми учреждениями.
               </p>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-3 gap-6 mb-10">
                 {[
                   { num: "15+", label: "Лет на рынке" },
                   { num: "₽ 3 млрд", label: "Объём сделок" },
-                  { num: "2", label: "Металла в каталоге" },
+                  { num: "2", label: "Металла" },
                 ].map(s => (
                   <div key={s.label} className="border-l-2 border-[#A07830] pl-4">
                     <p className="font-display text-3xl text-[#1A1410]">{s.num}</p>
                     <p className="font-body text-xs text-[#9e9080] tracking-wider mt-1">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: "Award", title: "Качество", desc: "Только сертифицированные металлы" },
+                  { icon: "Lock", title: "Надёжность", desc: "Полное юридическое сопровождение" },
+                  { icon: "Eye", title: "Прозрачность", desc: "Честные цены без скрытых комиссий" },
+                  { icon: "HeartHandshake", title: "Партнёрство", desc: "Долгосрочные отношения с клиентом" },
+                ].map(p => (
+                  <div key={p.title} className="flex gap-3 items-start">
+                    <div className="w-8 h-8 border border-[#ede8df] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name={p.icon} fallback="Star" size={14} className="text-[#A07830]" />
+                    </div>
+                    <div>
+                      <p className="font-body text-sm font-medium text-[#1A1410]">{p.title}</p>
+                      <p className="font-body text-xs text-[#9e9080] mt-0.5">{p.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -522,36 +540,14 @@ const Index = () => {
               />
             </div>
           </section>
-
-          <section className="bg-[#F5EDD8] py-16">
-            <div className="max-w-6xl mx-auto px-6">
-              <h2 className="font-display text-4xl text-[#1A1410] text-center mb-12">Наши принципы</h2>
-              <div className="grid md:grid-cols-4 gap-8">
-                {[
-                  { icon: "Award", title: "Качество", desc: "Только сертифицированные металлы от проверенных производителей" },
-                  { icon: "Lock", title: "Надёжность", desc: "Полное юридическое сопровождение каждой сделки" },
-                  { icon: "Eye", title: "Прозрачность", desc: "Честные цены без скрытых комиссий" },
-                  { icon: "HeartHandshake", title: "Партнёрство", desc: "Долгосрочные отношения с каждым клиентом" },
-                ].map(p => (
-                  <div key={p.title} className="text-center">
-                    <div className="w-10 h-10 flex items-center justify-center mx-auto mb-4">
-                      <Icon name={p.icon} fallback="Star" size={24} className="text-[#A07830]" />
-                    </div>
-                    <h3 className="font-display text-xl text-[#1A1410] mb-2">{p.title}</h3>
-                    <p className="font-body text-xs text-[#6b5e52] leading-relaxed">{p.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
         </main>
       )}
 
       {/* SELL */}
       {active === "sell" && (
         <main className="max-w-6xl mx-auto px-6 py-20">
-          <div className="mb-16">
-            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Выкуп металлов</p>
+          <div className="border-b border-[#ede8df] mb-12 pb-8">
+            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Выкуп металлов</p>
             <h1 className="font-display text-5xl text-[#1A1410]">Продать металл</h1>
           </div>
 
@@ -658,8 +654,8 @@ const Index = () => {
       {/* CONTACTS */}
       {active === "contacts" && (
         <main className="max-w-6xl mx-auto px-6 py-20">
-          <div className="mb-16">
-            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Связь с нами</p>
+          <div className="border-b border-[#ede8df] mb-12 pb-8">
+            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Связь с нами</p>
             <h1 className="font-display text-5xl text-[#1A1410]">Контакты</h1>
           </div>
           <div className="grid md:grid-cols-2 gap-16">
