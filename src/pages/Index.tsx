@@ -685,10 +685,12 @@ const Index = () => {
               <h2 className="font-display text-3xl text-[#1A1410] mb-8">Реквизиты</h2>
               <div className="flex flex-col gap-6">
                 {[
-                  { icon: "MapPin", title: "Адрес", value: "Комсомольский проспект, 7с2" },
-                  { icon: "Phone", title: "Телефон", value: "+7 (903) 711-82-28" },
-                  { icon: "Mail", title: "Email", value: "mr.zolotov.msk@yandex.ru" },
-                  { icon: "Clock", title: "Часы работы", value: "Пн–Пт: 9:00–18:00" },
+                  { icon: "MapPin", title: "Адрес", value: "Комсомольский проспект, 7с2", href: null },
+                  { icon: "Phone", title: "Телефон", value: "+7 (903) 711-82-28", href: "tel:+79037118228" },
+                  { icon: "Mail", title: "Email", value: "mr.zolotov.msk@yandex.ru", href: "mailto:mr.zolotov.msk@yandex.ru" },
+                  { icon: "Clock", title: "Часы работы", value: "Пн–Пт: 9:00–18:00", href: null },
+                  { icon: "MessageCircle", title: "WhatsApp", value: "+7 (903) 711-82-28", href: "https://wa.me/79037118228" },
+                  { icon: "Send", title: "Telegram", value: "@zolotov_mr", href: "https://t.me/zolotov_mr" },
                 ].map(c => (
                   <div key={c.title} className="flex gap-4">
                     <div className="w-10 h-10 border border-[#ede8df] flex items-center justify-center flex-shrink-0">
@@ -696,44 +698,14 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="font-body text-xs text-[#9e9080] tracking-wider mb-1">{c.title}</p>
-                      <p className="font-body text-sm text-[#1A1410]">{c.value}</p>
+                      {c.href ? (
+                        <a href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="font-body text-sm text-[#1A1410] hover:text-[#A07830] transition-colors">{c.value}</a>
+                      ) : (
+                        <p className="font-body text-sm text-[#1A1410]">{c.value}</p>
+                      )}
                     </div>
                   </div>
                 ))}
-                <a
-                  href="https://wa.me/79037118228"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex gap-4 items-center group"
-                >
-                  <div className="w-10 h-10 border border-[#25D366] flex items-center justify-center flex-shrink-0 group-hover:bg-[#25D366] transition-colors">
-                    <Icon name="MessageCircle" size={16} className="text-[#25D366] group-hover:text-white transition-colors" />
-                  </div>
-                  <div>
-                    <p className="font-body text-xs text-[#9e9080] tracking-wider mb-1">WhatsApp</p>
-                    <p className="font-body text-sm text-[#25D366] group-hover:underline">+7 (903) 711-82-28</p>
-                  </div>
-                </a>
-                <a
-                  href="https://t.me/zolotov_mr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex gap-4 items-center group"
-                >
-                  <div className="w-10 h-10 border border-[#2AABEE] flex items-center justify-center flex-shrink-0 group-hover:bg-[#2AABEE] transition-colors">
-                    <Icon name="Send" size={16} className="text-[#2AABEE] group-hover:text-white transition-colors" />
-                  </div>
-                  <div>
-                    <p className="font-body text-xs text-[#9e9080] tracking-wider mb-1">Telegram</p>
-                    <p className="font-body text-sm text-[#2AABEE] group-hover:underline">@zolotov_mr</p>
-                  </div>
-                </a>
-              </div>
-              <div className="mt-10 p-6 bg-[#1A1410]">
-                <p className="font-display text-2xl text-[#C8A050] mb-2">Прямой выкуп</p>
-                <p className="font-body text-sm text-[#9e9080] leading-relaxed">
-                  Покупаем металл по рыночным котировкам без дисконта. Оценка и расчёт в день обращения.
-                </p>
               </div>
             </div>
           </div>
