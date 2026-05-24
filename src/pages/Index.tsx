@@ -117,10 +117,10 @@ const Index = () => {
   const getPrice = (id: string, type: "buy" | "sell") => {
     const fallback = METALS.find(m => m.id === id)?.price ?? SELL_ITEMS.find(m => m.id === id)?.defaultPrice ?? 0;
     if (type === "buy") return manualBuy[id] ?? cbBuy[id] ?? fallback;
-    // Цена выкупа = котировка ЦБ минус 4%, если не задана вручную
     if (manualSell[id] !== undefined) return manualSell[id];
     const cbPrice = cbBuy[id] ?? fallback;
-    return Math.round(cbPrice * 0.96 * 100) / 100;
+    const discount = id === "gold585" ? 0.94 : 0.96;
+    return Math.round(cbPrice * discount * 100) / 100;
   };
 
   const startEdit = (key: string, val: number) => {
