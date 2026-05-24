@@ -188,12 +188,7 @@ const Index = () => {
               </button>
             ))}
           </nav>
-          <button
-            onClick={() => setActive("contacts")}
-            className="hidden md:block bg-[#A07830] text-white font-body text-sm px-5 py-2 tracking-wider hover:bg-[#8a6428] transition-colors"
-          >
-            Купить
-          </button>
+
           <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             <Icon name={menuOpen ? "X" : "Menu"} size={22} />
           </button>
