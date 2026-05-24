@@ -339,6 +339,27 @@ const Index = () => {
                     </div>
                   );
                 })}
+
+                {/* Курс доллара */}
+                {usdRate && (
+                  <div className="bg-white border border-[#ede8df] p-6 hover:shadow-lg transition-all duration-300">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="font-body text-xs text-[#9e9080] tracking-widest uppercase mb-1">USD/RUB</p>
+                        <h3 className="font-display text-2xl text-[#1A1410]">Доллар</h3>
+                      </div>
+                      <span className="font-body text-[10px] text-[#A07830] tracking-widest border border-[#ede8df] px-2 py-1">MOEX</span>
+                    </div>
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <p className="font-display text-3xl font-light text-[#1A1410]">
+                          {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 4 })} ₽
+                        </p>
+                        <p className="font-body text-xs text-[#9e9080] mt-0.5">за 1 доллар</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </section>
