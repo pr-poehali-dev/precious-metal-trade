@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
 const SELL_ITEMS = [
-  { id: "gold", name: "Золото", symbol: "XAU", purity: "999.9", defaultPrice: 10314 },
-  { id: "silver", name: "Серебро", symbol: "XAG", purity: "999", defaultPrice: 171 },
-  { id: "gold585", name: "Лом Золото", symbol: "AU", purity: "585", defaultPrice: 6100 },
+  { id: "gold", name: "Золото", symbol: "XAU", purity: "999.9", defaultPrice: 10314, img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/d4adee9f-63bd-4111-9624-ed7b47e7154f.jpg" },
+  { id: "silver", name: "Серебро", symbol: "XAG", purity: "999", defaultPrice: 171, img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/9e2715fb-de1f-43b0-a923-a1f70c44791f.jpg" },
+  { id: "gold585", name: "Лом Золото", symbol: "AU", purity: "585", defaultPrice: 6100, img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/363a4f64-874a-4469-a531-2a489685e54d.jpg" },
 ];
 
 const METALS = [
@@ -536,11 +536,18 @@ const Index = () => {
           {/* Карточки с ценами выкупа */}
           <div className="grid md:grid-cols-2 gap-8 mb-20">
             {SELL_ITEMS.map(m => (
-              <div key={m.id} className="bg-white border border-[#ede8df] p-8">
+              <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden">
+                <div className="relative aspect-video overflow-hidden">
+                  <img src={m.img} alt={m.name} className="w-full h-full object-cover" />
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1">
+                    <span className="font-body text-xs tracking-widest text-[#A07830]">{m.symbol} · {m.purity}</span>
+                  </div>
+                </div>
+                <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="font-display text-3xl text-[#1A1410]">{m.name}</h2>
-                    <p className="font-body text-xs text-[#9e9080] tracking-widest mt-1">{m.symbol} · {m.purity} проба</p>
+                    <p className="font-body text-xs text-[#9e9080] tracking-widest mt-1">{m.purity} проба</p>
                   </div>
                   <div className="w-12 h-12 bg-[#faf9f7] border border-[#ede8df] flex items-center justify-center">
                     <Icon name="TrendingDown" size={20} className="text-[#A07830]" />
@@ -600,6 +607,7 @@ const Index = () => {
                 >
                   Оставить заявку на продажу
                 </button>
+                </div>
               </div>
             ))}
           </div>
