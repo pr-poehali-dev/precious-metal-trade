@@ -579,6 +579,20 @@ const Index = () => {
                     </div>
                   </div>
                 ))}
+                <a
+                  href="https://wa.me/79037118228"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex gap-4 items-center group"
+                >
+                  <div className="w-10 h-10 border border-[#25D366] flex items-center justify-center flex-shrink-0 group-hover:bg-[#25D366] transition-colors">
+                    <Icon name="MessageCircle" size={16} className="text-[#25D366] group-hover:text-white transition-colors" />
+                  </div>
+                  <div>
+                    <p className="font-body text-xs text-[#9e9080] tracking-wider mb-1">WhatsApp</p>
+                    <p className="font-body text-sm text-[#25D366] group-hover:underline">+7 (903) 711-82-28</p>
+                  </div>
+                </a>
               </div>
               <div className="mt-10 p-6 bg-[#1A1410]">
                 <p className="font-display text-2xl text-[#C8A050] mb-2">Прямой выкуп</p>
