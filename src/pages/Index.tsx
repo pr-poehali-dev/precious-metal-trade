@@ -222,7 +222,7 @@ const Index = () => {
           <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
               <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-6">Профессиональная торговля</p>
-              <h1 className="font-display text-6xl md:text-7xl text-[#1A1410] leading-tight mb-6">
+              <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-[#1A1410] leading-tight mb-6">
                 Драгоценные<br />
                 <em className="text-[#A07830] not-italic">металлы</em><br />
                 высшей пробы
@@ -343,7 +343,7 @@ const Index = () => {
           {/* Features */}
           <section className="bg-[#1A1410] py-20">
             <div className="max-w-6xl mx-auto px-6">
-              <h2 className="font-display text-5xl text-white text-center mb-16">Почему выбирают нас</h2>
+              <h2 className="font-display text-3xl md:text-5xl text-white text-center mb-12 md:mb-16">Почему выбирают нас</h2>
               <div className="grid md:grid-cols-3 gap-8">
                 {[
                   { icon: "ShieldCheck", title: "Полная гарантия и прозрачность сделки", desc: "Каждая сделка документируется от начала до конца. Никаких скрытых условий — только честные договорённости." },
@@ -369,7 +369,7 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-6 py-20">
           <div className="border-b border-[#ede8df] mb-12 pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Наши товары</p>
-            <h1 className="font-display text-5xl text-[#1A1410]">Каталог металлов</h1>
+            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Каталог металлов</h1>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             {METALS.map((m, i) => (
@@ -466,9 +466,9 @@ const Index = () => {
           </div>
 
           {/* Как купить металл */}
-          <section className="bg-[#1A1410] p-12 mt-20">
-            <h2 className="font-display text-4xl text-white text-center mb-12">Как купить металл</h2>
-            <div className="grid md:grid-cols-4 gap-8">
+          <section className="bg-[#1A1410] p-6 md:p-12 mt-20">
+            <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Как купить металл</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
                 { num: "01", title: "Заявка", desc: "Выберите металл и оставьте заявку на сайте или по телефону" },
                 { num: "02", title: "Подтверждение", desc: "Мы свяжемся и зафиксируем цену по актуальным котировкам" },
@@ -476,9 +476,9 @@ const Index = () => {
                 { num: "04", title: "Получение", desc: "Передача металла с документами и сертификатами в день сделки" },
               ].map(s => (
                 <div key={s.num} className="text-center">
-                  <p className="font-display text-5xl text-[#A07830] mb-4">{s.num}</p>
-                  <h3 className="font-display text-xl text-white mb-2">{s.title}</h3>
-                  <p className="font-body text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
+                  <p className="font-display text-3xl md:text-5xl text-[#A07830] mb-2 md:mb-4">{s.num}</p>
+                  <h3 className="font-display text-lg md:text-xl text-white mb-1 md:mb-2">{s.title}</h3>
+                  <p className="font-body text-xs md:text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -491,9 +491,9 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-6 py-20">
           <div className="border-b border-[#ede8df] mb-12 pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">О компании</p>
-            <h1 className="font-display text-5xl text-[#1A1410]">Экспертиза в мире металлов</h1>
+            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Экспертиза в мире металлов</h1>
           </div>
-          <section className="grid md:grid-cols-2 gap-16 items-start">
+          <section className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
             <div>
               <p className="font-body text-[#6b5e52] leading-relaxed mb-6 text-base">
                 Золотов — профессиональный дилер драгоценных металлов с многолетним опытом работы на российском рынке. Специализируемся на инвестиционных слитках и монетах высшей пробы.
@@ -501,15 +501,15 @@ const Index = () => {
               <p className="font-body text-[#6b5e52] leading-relaxed mb-8">
                 Каждая сделка сопровождается полным пакетом документов и сертификатами происхождения. Работаем с частными инвесторами, корпоративными клиентами и финансовыми учреждениями.
               </p>
-              <div className="grid grid-cols-3 gap-6 mb-10">
+              <div className="grid grid-cols-3 gap-3 md:gap-6 mb-10">
                 {[
                   { num: "15+", label: "Лет на рынке" },
                   { num: "₽ 3 млрд", label: "Объём сделок" },
                   { num: "2", label: "Металла" },
                 ].map(s => (
                   <div key={s.label} className="border-l-2 border-[#A07830] pl-4">
-                    <p className="font-display text-3xl text-[#1A1410]">{s.num}</p>
-                    <p className="font-body text-xs text-[#9e9080] tracking-wider mt-1">{s.label}</p>
+                    <p className="font-display text-xl md:text-3xl text-[#1A1410]">{s.num}</p>
+                    <p className="font-body text-[10px] md:text-xs text-[#9e9080] tracking-wider mt-1">{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -548,7 +548,7 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-6 py-20">
           <div className="border-b border-[#ede8df] mb-12 pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Выкуп металлов</p>
-            <h1 className="font-display text-5xl text-[#1A1410]">Продать металл</h1>
+            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Продать металл</h1>
           </div>
 
           {/* Карточки с ценами выкупа */}
@@ -631,9 +631,9 @@ const Index = () => {
           </div>
 
           {/* Как это работает */}
-          <section className="bg-[#1A1410] p-12">
-            <h2 className="font-display text-4xl text-white text-center mb-12">Как продать металл</h2>
-            <div className="grid md:grid-cols-4 gap-8">
+          <section className="bg-[#1A1410] p-6 md:p-12">
+            <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Как продать металл</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
                 { num: "01", title: "Заявка", desc: "Оставьте заявку с указанием металла и количества" },
                 { num: "02", title: "Оценка", desc: "Мы свяжемся и согласуем условия по актуальной цене" },
@@ -641,9 +641,9 @@ const Index = () => {
                 { num: "04", title: "Расчёт", desc: "Оплата в день сделки — наличными или переводом" },
               ].map(s => (
                 <div key={s.num} className="text-center">
-                  <p className="font-display text-5xl text-[#A07830] mb-4">{s.num}</p>
-                  <h3 className="font-display text-xl text-white mb-2">{s.title}</h3>
-                  <p className="font-body text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
+                  <p className="font-display text-3xl md:text-5xl text-[#A07830] mb-2 md:mb-4">{s.num}</p>
+                  <h3 className="font-display text-lg md:text-xl text-white mb-1 md:mb-2">{s.title}</h3>
+                  <p className="font-body text-xs md:text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -656,11 +656,11 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-6 py-20">
           <div className="border-b border-[#ede8df] mb-12 pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Связь с нами</p>
-            <h1 className="font-display text-5xl text-[#1A1410]">Контакты</h1>
+            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Контакты</h1>
           </div>
-          <div className="grid md:grid-cols-2 gap-16">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16">
             <div>
-              <h2 className="font-display text-3xl text-[#1A1410] mb-8">Оставьте заявку</h2>
+              <h2 className="font-display text-2xl md:text-3xl text-[#1A1410] mb-8">Оставьте заявку</h2>
               <div className="flex flex-col gap-4">
                 {["Ваше имя", "Телефон или email"].map(pl => (
                   <input
