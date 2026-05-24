@@ -199,10 +199,11 @@ const Index = () => {
           ))}
           {usdRate && (
             <span className="font-body text-xs tracking-widest mx-8">
-              USD&nbsp;
+              USD/RUB&nbsp;
               <span className="text-white font-medium">
-                {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 4 })} ₽
               </span>
+              &nbsp;<span className="text-[#C8A050] text-[10px]">MOEX</span>
             </span>
           )}
         </div>

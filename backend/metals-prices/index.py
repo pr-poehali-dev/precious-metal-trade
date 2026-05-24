@@ -45,18 +45,18 @@ def handler(event: dict, context) -> dict:
             'sell': float(sell),
         }
 
-    # Курс доллара ЦБ РФ
+    # Курс доллара с Московской биржи (MOEX) — реальное время
     usd_rate = None
     try:
-        usd_url = 'https://www.cbr.ru/scripts/XML_daily.asp'
-        usd_req = urllib.request.Request(usd_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(usd_req, timeout=10) as usd_resp:
-            usd_raw = usd_resp.read().decode('windows-1251')
-        usd_root = ET.fromstring(usd_raw)
-        for valute in usd_root.findall('Valute'):
-            if valute.find('CharCode').text == 'USD':
-                usd_rate = float(valute.find('Value').text.replace(',', '.'))
-                break
+        moex_url = 'https://iss.moex.com/iss/engines/currency/markets/selt/boards/CETS/securities/USD000UTSTOM.json?iss.meta=off&iss.only=marketdata&marketdata.columns=LAST,OPEN'
+        moex_req = urllib.request.Request(moex_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(moex_req, timeout=10) as moex_resp:
+            moex_data = json.loads(moex_resp.read().decode('utf-8'))
+        data_rows = moex_data.get('marketdata', {}).get('data', [])
+        if data_rows and data_rows[0][0]:
+            usd_rate = float(data_rows[0][0])
+        elif data_rows and data_rows[0][1]:
+            usd_rate = float(data_rows[0][1])
     except Exception:
         pass
 
