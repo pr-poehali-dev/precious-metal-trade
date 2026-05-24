@@ -714,6 +714,20 @@ const Index = () => {
                     <p className="font-body text-sm text-[#25D366] group-hover:underline">+7 (903) 711-82-28</p>
                   </div>
                 </a>
+                <a
+                  href="https://t.me/zolotov_mr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex gap-4 items-center group"
+                >
+                  <div className="w-10 h-10 border border-[#2AABEE] flex items-center justify-center flex-shrink-0 group-hover:bg-[#2AABEE] transition-colors">
+                    <Icon name="Send" size={16} className="text-[#2AABEE] group-hover:text-white transition-colors" />
+                  </div>
+                  <div>
+                    <p className="font-body text-xs text-[#9e9080] tracking-wider mb-1">Telegram</p>
+                    <p className="font-body text-sm text-[#2AABEE] group-hover:underline">@zolotov_mr</p>
+                  </div>
+                </a>
               </div>
               <div className="mt-10 p-6 bg-[#1A1410]">
                 <p className="font-display text-2xl text-[#C8A050] mb-2">Прямой выкуп</p>
