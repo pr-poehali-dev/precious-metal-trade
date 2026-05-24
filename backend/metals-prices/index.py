@@ -47,16 +47,24 @@ def handler(event: dict, context) -> dict:
 
     # Курс доллара с Московской биржи (MOEX) — реальное время
     usd_rate = None
+    usd_open = None
     try:
         moex_url = 'https://iss.moex.com/iss/engines/currency/markets/selt/boards/CETS/securities/USD000UTSTOM.json?iss.meta=off&iss.only=marketdata&marketdata.columns=LAST,OPEN'
         moex_req = urllib.request.Request(moex_url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(moex_req, timeout=10) as moex_resp:
             moex_data = json.loads(moex_resp.read().decode('utf-8'))
         data_rows = moex_data.get('marketdata', {}).get('data', [])
-        if data_rows and data_rows[0][0]:
-            usd_rate = float(data_rows[0][0])
-        elif data_rows and data_rows[0][1]:
-            usd_rate = float(data_rows[0][1])
+        if data_rows:
+            last = data_rows[0][0]
+            open_price = data_rows[0][1]
+            if last:
+                usd_rate = float(last)
+            elif open_price:
+                usd_rate = float(open_price)
+            if open_price:
+                usd_open = float(open_price)
+            else:
+                usd_open = usd_rate
     except Exception:
         pass
 
@@ -64,6 +72,7 @@ def handler(event: dict, context) -> dict:
         'gold': metals.get('1'),    # Золото, руб/грамм
         'silver': metals.get('2'),  # Серебро, руб/грамм
         'usd': usd_rate,            # Курс доллара, руб
+        'usd_open': usd_open,       # Курс открытия
         'source': 'ЦБ РФ',
     }
 

@@ -95,6 +95,8 @@ const Index = () => {
   const [editValue, setEditValue] = useState("");
   const [cbDate, setCbDate] = useState<string | null>(null);
   const [usdRate, setUsdRate] = useState<number | null>(null);
+  const [usdHistory, setUsdHistory] = useState<number[]>([]);
+  const [usdOpen, setUsdOpen] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCbPrices = async () => {
@@ -108,7 +110,14 @@ const Index = () => {
         setCbBuy(buy);
         setCbSell(sell);
         if (data.gold?.date) setCbDate(data.gold.date);
-        if (data.usd) setUsdRate(data.usd);
+        if (data.usd) {
+          setUsdRate(data.usd);
+          setUsdHistory(prev => {
+            const next = [...prev, data.usd].slice(-20);
+            return next;
+          });
+        }
+        if (data.usd_open) setUsdOpen(data.usd_open);
       } catch (e) { console.error(e); }
     };
     fetchCbPrices();
@@ -341,25 +350,33 @@ const Index = () => {
                 })}
 
                 {/* Курс доллара */}
-                {usdRate && (
-                  <div className="bg-white border border-[#ede8df] p-6 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <p className="font-body text-xs text-[#9e9080] tracking-widest uppercase mb-1">USD/RUB</p>
-                        <h3 className="font-display text-2xl text-[#1A1410]">Доллар</h3>
+                {usdRate && (() => {
+                  const usdChange = usdOpen && usdOpen > 0 ? +((usdRate - usdOpen) / usdOpen * 100).toFixed(2) : 0;
+                  const usdUp = usdChange >= 0;
+                  const points = usdHistory.length >= 2 ? usdHistory : [usdRate, usdRate];
+                  return (
+                    <div className="bg-white border border-[#ede8df] p-6 hover:shadow-lg transition-all duration-300">
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <p className="font-body text-xs text-[#9e9080] tracking-widest uppercase mb-1">USD/RUB</p>
+                          <h3 className="font-display text-2xl text-[#1A1410]">Доллар</h3>
+                        </div>
+                        <MiniChart points={points} up={usdUp} />
                       </div>
-                      <span className="font-body text-[10px] text-[#A07830] tracking-widest border border-[#ede8df] px-2 py-1">MOEX</span>
-                    </div>
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <p className="font-display text-3xl font-light text-[#1A1410]">
-                          {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 4 })} ₽
-                        </p>
-                        <p className="font-body text-xs text-[#9e9080] mt-0.5">за 1 доллар</p>
+                      <div className="flex items-end justify-between">
+                        <div>
+                          <p className="font-display text-3xl font-light text-[#1A1410]">
+                            {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 4 })} ₽
+                          </p>
+                          <p className="font-body text-xs text-[#9e9080] mt-0.5">за 1 доллар</p>
+                        </div>
+                        <span className={`text-sm font-body font-medium ${usdUp ? "text-green-600" : "text-red-500"}`}>
+                          {usdUp ? "+" : ""}{usdChange}%
+                        </span>
                       </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
               </div>
             </div>
           </section>
