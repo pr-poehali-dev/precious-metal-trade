@@ -170,26 +170,34 @@ const Index = () => {
 
       {/* Header */}
       <header className="bg-white border-b border-[#ede8df] sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button onClick={() => setActive("home")} className="text-left">
-            <div className="flex items-baseline gap-2 leading-none">
-              <span className="font-display text-2xl text-[#1A1410] tracking-tight">Мистер</span>
-              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-2xl text-[#A07830]">Золотов</span>
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+          <button onClick={() => setActive("home")} className="text-left flex items-center gap-3">
+            <div className="w-8 h-8 bg-[#1A1410] flex items-center justify-center flex-shrink-0">
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-lg text-[#C8A050] leading-none">З</span>
+            </div>
+            <div className="leading-none">
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-2xl text-[#1A1410]">Золотов</span>
+              <span className="font-body text-[9px] tracking-[0.25em] text-[#A07830] uppercase block mt-0.5">Драгоценные металлы</span>
             </div>
           </button>
-          <nav className="hidden md:flex items-center gap-8">
+
+          <nav className="hidden md:flex items-center gap-10">
             {nav.map(n => (
               <button
                 key={n.key}
                 onClick={() => setActive(n.key)}
-                className={`font-body text-sm tracking-wider transition-colors ${active === n.key ? "text-[#A07830]" : "text-[#9e9080] hover:text-[#1A1410]"}`}
+                className={`font-body text-sm tracking-widest uppercase transition-colors relative pb-1 ${
+                  active === n.key
+                    ? "text-[#A07830] after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-[#A07830]"
+                    : "text-[#6b5e52] hover:text-[#1A1410]"
+                }`}
               >
                 {n.label}
               </button>
             ))}
           </nav>
 
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="md:hidden text-[#1A1410]" onClick={() => setMenuOpen(!menuOpen)}>
             <Icon name={menuOpen ? "X" : "Menu"} size={22} />
           </button>
         </div>
