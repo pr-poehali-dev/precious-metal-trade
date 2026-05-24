@@ -137,7 +137,6 @@ const Index = () => {
 
   const nav: { key: Section; label: string }[] = [
     { key: "home", label: "Главная" },
-    { key: "catalog", label: "Купить" },
     { key: "sell", label: "Продать" },
     { key: "about", label: "О компании" },
     { key: "contacts", label: "Контакты" },
