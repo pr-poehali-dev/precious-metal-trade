@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
+const SELL_ITEMS = [
+  { id: "gold", name: "Золото", symbol: "XAU", purity: "999.9", defaultPrice: 10314 },
+  { id: "silver", name: "Серебро", symbol: "XAG", purity: "999", defaultPrice: 171 },
+  { id: "gold585", name: "Лом Золото", symbol: "AU", purity: "585", defaultPrice: 6100 },
+];
+
 const METALS = [
   {
     id: "gold",
@@ -104,8 +110,9 @@ const Index = () => {
   }, []);
 
   const getPrice = (id: string, type: "buy" | "sell") => {
-    if (type === "buy") return manualBuy[id] ?? cbBuy[id] ?? METALS.find(m => m.id === id)?.price ?? 0;
-    return manualSell[id] ?? cbSell[id] ?? METALS.find(m => m.id === id)?.price ?? 0;
+    const fallback = METALS.find(m => m.id === id)?.price ?? SELL_ITEMS.find(m => m.id === id)?.defaultPrice ?? 0;
+    if (type === "buy") return manualBuy[id] ?? cbBuy[id] ?? fallback;
+    return manualSell[id] ?? cbSell[id] ?? fallback;
   };
 
   const startEdit = (key: string, val: number) => {
@@ -528,7 +535,7 @@ const Index = () => {
 
           {/* Карточки с ценами выкупа */}
           <div className="grid md:grid-cols-2 gap-8 mb-20">
-            {METALS.map(m => (
+            {SELL_ITEMS.map(m => (
               <div key={m.id} className="bg-white border border-[#ede8df] p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div>
