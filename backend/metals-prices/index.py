@@ -45,9 +45,25 @@ def handler(event: dict, context) -> dict:
             'sell': float(sell),
         }
 
+    # Курс доллара ЦБ РФ
+    usd_rate = None
+    try:
+        usd_url = 'https://www.cbr.ru/scripts/XML_daily.asp'
+        usd_req = urllib.request.Request(usd_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(usd_req, timeout=10) as usd_resp:
+            usd_raw = usd_resp.read().decode('windows-1251')
+        usd_root = ET.fromstring(usd_raw)
+        for valute in usd_root.findall('Valute'):
+            if valute.find('CharCode').text == 'USD':
+                usd_rate = float(valute.find('Value').text.replace(',', '.'))
+                break
+    except Exception:
+        pass
+
     result = {
         'gold': metals.get('1'),    # Золото, руб/грамм
         'silver': metals.get('2'),  # Серебро, руб/грамм
+        'usd': usd_rate,            # Курс доллара, руб
         'source': 'ЦБ РФ',
     }
 

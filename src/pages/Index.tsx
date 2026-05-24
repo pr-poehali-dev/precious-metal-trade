@@ -94,6 +94,7 @@ const Index = () => {
   const [pendingEditKey, setPendingEditKey] = useState<{ key: string; val: number } | null>(null);
   const [editValue, setEditValue] = useState("");
   const [cbDate, setCbDate] = useState<string | null>(null);
+  const [usdRate, setUsdRate] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCbPrices = async () => {
@@ -107,6 +108,7 @@ const Index = () => {
         setCbBuy(buy);
         setCbSell(sell);
         if (data.gold?.date) setCbDate(data.gold.date);
+        if (data.usd) setUsdRate(data.usd);
       } catch (e) { console.error(e); }
     };
     fetchCbPrices();
@@ -195,6 +197,14 @@ const Index = () => {
               </span>
             </span>
           ))}
+          {usdRate && (
+            <span className="font-body text-xs tracking-widest mx-8">
+              USD&nbsp;
+              <span className="text-white font-medium">
+                {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+              </span>
+            </span>
+          )}
         </div>
       </div>
 
