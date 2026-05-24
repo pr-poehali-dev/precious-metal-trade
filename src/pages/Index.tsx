@@ -277,9 +277,9 @@ const Index = () => {
             </div>
             <div className="relative">
               <img
-                src="https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/9f8fc474-95d4-4d76-9e4b-ff5bed8c09e8.jpg"
+                src="https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/bucket/27e32109-547e-4435-8d1b-a437f15f66c9.jpg"
                 alt="Золотые слитки"
-                className="w-full aspect-square object-cover"
+                className="w-full aspect-square object-cover object-top"
               />
               <div className="absolute -bottom-4 -left-4 bg-white border border-[#ede8df] p-4 shadow-lg">
                 <p className="font-body text-xs text-[#9e9080] tracking-widest mb-1">ЗОЛОТО · XAU</p>
