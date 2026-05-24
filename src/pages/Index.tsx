@@ -146,9 +146,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#faf9f7]">
       {/* Ticker */}
-      <div className="bg-[#A07830] text-white py-2 overflow-hidden relative">
+      <div className="bg-[#1A1410] text-[#C8A050] py-2 overflow-hidden relative">
         {cbDate && (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 font-body text-[10px] text-white/60 tracking-wider z-10">
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 font-body text-[10px] text-[#6b5e52] tracking-wider z-10">
             ЦБ РФ · {cbDate}
           </span>
         )}
@@ -160,7 +160,7 @@ const Index = () => {
                 {(getPrice(m.id, "buy")).toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
               </span>
               &nbsp;
-              <span className={m.change >= 0 ? "text-green-200" : "text-red-200"}>
+              <span className={m.change >= 0 ? "text-green-400" : "text-red-400"}>
                 {m.change >= 0 ? "▲" : "▼"} {Math.abs(m.change)}%
               </span>
             </span>
@@ -341,7 +341,7 @@ const Index = () => {
           </section>
 
           {/* Features */}
-          <section className="bg-[#A07830] py-20">
+          <section className="bg-[#1A1410] py-20">
             <div className="max-w-6xl mx-auto px-6">
               <h2 className="font-display text-3xl md:text-5xl text-white text-center mb-12 md:mb-16">Почему выбирают нас</h2>
               <div className="grid md:grid-cols-3 gap-8">
@@ -351,11 +351,11 @@ const Index = () => {
                   { icon: "Lock", title: "Безопасная сделка", desc: "Гарантия конфиденциальности на каждом этапе. Ваши данные и условия сделки остаются строго между нами." },
                 ].map(f => (
                   <div key={f.title} className="text-center">
-                    <div className="w-12 h-12 border border-white/40 flex items-center justify-center mx-auto mb-6">
-                      <Icon name={f.icon} fallback="Star" size={20} className="text-white" />
+                    <div className="w-12 h-12 border border-[#A07830] flex items-center justify-center mx-auto mb-6">
+                      <Icon name={f.icon} fallback="Star" size={20} className="text-[#C8A050]" />
                     </div>
                     <h3 className="font-display text-2xl text-white mb-3">{f.title}</h3>
-                    <p className="font-body text-sm text-white/70 leading-relaxed">{f.desc}</p>
+                    <p className="font-body text-sm text-[#9e9080] leading-relaxed">{f.desc}</p>
                   </div>
                 ))}
               </div>
@@ -466,7 +466,7 @@ const Index = () => {
           </div>
 
           {/* Как купить металл */}
-          <section className="bg-[#A07830] p-6 md:p-12 mt-20">
+          <section className="bg-[#1A1410] p-6 md:p-12 mt-20">
             <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Как купить металл</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
@@ -476,9 +476,9 @@ const Index = () => {
                 { num: "04", title: "Получение", desc: "Передача металла с документами и сертификатами в день сделки" },
               ].map(s => (
                 <div key={s.num} className="text-center">
-                  <p className="font-display text-3xl md:text-5xl text-white/40 mb-2 md:mb-4">{s.num}</p>
+                  <p className="font-display text-3xl md:text-5xl text-[#A07830] mb-2 md:mb-4">{s.num}</p>
                   <h3 className="font-display text-lg md:text-xl text-white mb-1 md:mb-2">{s.title}</h3>
-                  <p className="font-body text-xs md:text-sm text-white/70 leading-relaxed">{s.desc}</p>
+                  <p className="font-body text-xs md:text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -631,7 +631,7 @@ const Index = () => {
           </div>
 
           {/* Как это работает */}
-          <section className="bg-[#A07830] p-6 md:p-12">
+          <section className="bg-[#1A1410] p-6 md:p-12">
             <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Как продать металл</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
@@ -641,9 +641,9 @@ const Index = () => {
                 { num: "04", title: "Расчёт", desc: "Оплата в день сделки — наличными или переводом" },
               ].map(s => (
                 <div key={s.num} className="text-center">
-                  <p className="font-display text-3xl md:text-5xl text-white/40 mb-2 md:mb-4">{s.num}</p>
+                  <p className="font-display text-3xl md:text-5xl text-[#A07830] mb-2 md:mb-4">{s.num}</p>
                   <h3 className="font-display text-lg md:text-xl text-white mb-1 md:mb-2">{s.title}</h3>
-                  <p className="font-body text-xs md:text-sm text-white/70 leading-relaxed">{s.desc}</p>
+                  <p className="font-body text-xs md:text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -717,9 +717,9 @@ const Index = () => {
                   </div>
                 </a>
               </div>
-              <div className="mt-10 p-6 bg-[#A07830]">
-                <p className="font-display text-2xl text-white mb-2">Прямой выкуп</p>
-                <p className="font-body text-sm text-white/70 leading-relaxed">
+              <div className="mt-10 p-6 bg-[#1A1410]">
+                <p className="font-display text-2xl text-[#C8A050] mb-2">Прямой выкуп</p>
+                <p className="font-body text-sm text-[#9e9080] leading-relaxed">
                   Покупаем металл по рыночным котировкам без дисконта. Оценка и расчёт в день обращения.
                 </p>
               </div>
@@ -729,15 +729,15 @@ const Index = () => {
       )}
 
       {/* Footer */}
-      <footer className="bg-[#A07830] border-t border-[#8a6428] py-10 mt-auto">
+      <footer className="bg-[#1A1410] border-t border-[#2a2018] py-10 mt-auto">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <button onClick={() => setActive("home")} className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-white flex items-center justify-center flex-shrink-0">
-              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-base text-[#A07830] leading-none">З</span>
+            <div className="w-7 h-7 bg-[#A07830] flex items-center justify-center flex-shrink-0">
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-base text-[#1A1410] leading-none">З</span>
             </div>
             <div className="leading-none text-left">
               <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-xl text-white">Золотов</span>
-              <span className="font-body text-[9px] tracking-[0.25em] text-white/60 uppercase block mt-0.5">Драгоценные металлы</span>
+              <span className="font-body text-[9px] tracking-[0.25em] text-[#A07830] uppercase block mt-0.5">Драгоценные металлы</span>
             </div>
           </button>
           <div className="flex gap-8">
@@ -745,13 +745,13 @@ const Index = () => {
               <button
                 key={n.key}
                 onClick={() => setActive(n.key)}
-                className="font-body text-xs text-white/70 hover:text-white tracking-widest uppercase transition-colors"
+                className="font-body text-xs text-[#6b5e52] hover:text-[#C8A050] tracking-widest uppercase transition-colors"
               >
                 {n.label}
               </button>
             ))}
           </div>
-          <p className="font-body text-xs text-white/50 tracking-wider">© 2024 Золотов. Все права защищены.</p>
+          <p className="font-body text-xs text-[#4a3f35] tracking-wider">© 2024 Золотов. Все права защищены.</p>
         </div>
       </footer>
     </div>
