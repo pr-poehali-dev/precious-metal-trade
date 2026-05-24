@@ -76,10 +76,12 @@ const Index = () => {
   const [active, setActive] = useState<Section>("home");
   const [selectedMetal, setSelectedMetal] = useState(METALS[0]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [prices, setPrices] = useState(METALS.map(m => m.price));
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [cbBuy, setCbBuy] = useState<Record<string, number>>({});
+  const [cbSell, setCbSell] = useState<Record<string, number>>({});
+  const [manualBuy, setManualBuy] = useState<Record<string, number>>({});
+  const [manualSell, setManualSell] = useState<Record<string, number>>({});
+  const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
-  const [manualPrices, setManualPrices] = useState<Record<string, number>>({});
   const [cbDate, setCbDate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -87,41 +89,43 @@ const Index = () => {
       try {
         const res = await fetch("https://functions.poehali.dev/ec611c68-8981-4ab8-8be8-6d1248f75d5b");
         const data = await res.json();
-        setPrices(prev => prev.map((p, i) => {
-          const metal = METALS[i];
-          if (manualPrices[metal.id] !== undefined) return manualPrices[metal.id];
-          if (metal.id === "gold" && data.gold) return data.gold.buy;
-          if (metal.id === "silver" && data.silver) return data.silver.buy;
-          return p;
-        }));
+        const buy: Record<string, number> = {};
+        const sell: Record<string, number> = {};
+        if (data.gold) { buy["gold"] = data.gold.buy; sell["gold"] = data.gold.sell; }
+        if (data.silver) { buy["silver"] = data.silver.buy; sell["silver"] = data.silver.sell; }
+        setCbBuy(buy);
+        setCbSell(sell);
         if (data.gold?.date) setCbDate(data.gold.date);
       } catch (e) { console.error(e); }
     };
     fetchCbPrices();
     const interval = setInterval(fetchCbPrices, 60000);
     return () => clearInterval(interval);
-  }, [manualPrices]);
+  }, []);
 
-  const startEdit = (metalId: string, currentPrice: number) => {
-    setEditingId(metalId);
-    setEditValue(String(currentPrice));
+  const getPrice = (id: string, type: "buy" | "sell") => {
+    if (type === "buy") return manualBuy[id] ?? cbBuy[id] ?? METALS.find(m => m.id === id)?.price ?? 0;
+    return manualSell[id] ?? cbSell[id] ?? METALS.find(m => m.id === id)?.price ?? 0;
   };
 
-  const savePrice = (metalId: string, index: number) => {
+  const startEdit = (key: string, val: number) => {
+    setEditingKey(key);
+    setEditValue(String(val));
+  };
+
+  const saveEdit = (key: string) => {
     const val = parseFloat(editValue.replace(",", "."));
     if (!isNaN(val) && val > 0) {
-      setManualPrices(prev => ({ ...prev, [metalId]: val }));
-      setPrices(prev => prev.map((p, i) => i === index ? val : p));
+      const [id, type] = key.split("_");
+      if (type === "buy") setManualBuy(prev => ({ ...prev, [id]: val }));
+      else setManualSell(prev => ({ ...prev, [id]: val }));
     }
-    setEditingId(null);
+    setEditingKey(null);
   };
 
-  const resetPrice = (metalId: string) => {
-    setManualPrices(prev => {
-      const next = { ...prev };
-      delete next[metalId];
-      return next;
-    });
+  const resetManual = (id: string, type: "buy" | "sell") => {
+    if (type === "buy") setManualBuy(prev => { const n = { ...prev }; delete n[id]; return n; });
+    else setManualSell(prev => { const n = { ...prev }; delete n[id]; return n; });
   };
 
   const nav: { key: Section; label: string }[] = [
@@ -145,7 +149,7 @@ const Index = () => {
             <span key={i} className="font-body text-xs tracking-widest mx-8">
               {m.symbol}&nbsp;
               <span className="text-white font-medium">
-                {prices[i % 4]?.toLocaleString("ru-RU", { minimumFractionDigits: 2 }) ?? m.price.toLocaleString("ru-RU")} ₽
+                {(getPrice(m.id, "buy")).toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
               </span>
               &nbsp;
               <span className={m.change >= 0 ? "text-green-400" : "text-red-400"}>
@@ -378,69 +382,54 @@ const Index = () => {
                   </div>
                   <p className="font-body text-sm text-[#6b5e52] leading-relaxed mb-6">{m.desc}</p>
 
-                  {/* Цена с редактированием */}
-                  <div className="border border-[#ede8df] p-4 mb-4 bg-[#faf9f7]">
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="font-body text-xs text-[#9e9080] tracking-wider uppercase">Цена за грамм</p>
-                      <div className="flex items-center gap-2">
-                        {manualPrices[m.id] !== undefined && (
-                          <button
-                            onClick={() => resetPrice(m.id)}
-                            className="font-body text-xs text-[#9e9080] hover:text-red-500 transition-colors"
-                            title="Сбросить к авто"
-                          >
-                            Сбросить
-                          </button>
-                        )}
-                        {editingId !== m.id && (
-                          <button
-                            onClick={() => startEdit(m.id, prices[i])}
-                            className="flex items-center gap-1 font-body text-xs text-[#A07830] hover:text-[#8a6428] transition-colors"
-                          >
-                            <Icon name="Pencil" size={12} />
-                            Изменить
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    {editingId === m.id ? (
-                      <div className="flex items-center gap-2">
-                        <input
-                          autoFocus
-                          type="number"
-                          value={editValue}
-                          onChange={e => setEditValue(e.target.value)}
-                          onKeyDown={e => {
-                            if (e.key === "Enter") savePrice(m.id, i);
-                            if (e.key === "Escape") setEditingId(null);
-                          }}
-                          className="flex-1 border border-[#A07830] bg-white px-3 py-2 font-display text-2xl text-[#1A1410] focus:outline-none"
-                        />
-                        <span className="font-display text-xl text-[#9e9080]">₽</span>
-                        <button
-                          onClick={() => savePrice(m.id, i)}
-                          className="bg-[#A07830] text-white px-3 py-2 font-body text-xs tracking-wider hover:bg-[#8a6428] transition-colors"
-                        >
-                          ОК
-                        </button>
-                        <button
-                          onClick={() => setEditingId(null)}
-                          className="border border-[#ede8df] px-3 py-2 font-body text-xs text-[#9e9080] hover:border-[#9e9080] transition-colors"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex items-baseline gap-2">
-                        <p className="font-display text-3xl text-[#1A1410]">
-                          {prices[i].toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
-                        </p>
-                        {manualPrices[m.id] !== undefined && (
-                          <span className="font-body text-xs text-[#A07830] tracking-wider">● вручную</span>
-                        )}
-                      </div>
-                    )}
+                  {/* Цены Купить / Продать */}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    {(["buy", "sell"] as const).map(type => {
+                      const key = `${m.id}_${type}`;
+                      const price = getPrice(m.id, type);
+                      const isManual = type === "buy" ? manualBuy[m.id] !== undefined : manualSell[m.id] !== undefined;
+                      const isEditing = editingKey === key;
+                      return (
+                        <div key={type} className="border border-[#ede8df] p-3 bg-[#faf9f7]">
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="font-body text-xs text-[#9e9080] tracking-wider uppercase">
+                              {type === "buy" ? "Купить" : "Продать"}
+                            </p>
+                            <div className="flex items-center gap-1">
+                              {isManual && (
+                                <button onClick={() => resetManual(m.id, type)} className="font-body text-[10px] text-[#9e9080] hover:text-red-500 transition-colors">↺</button>
+                              )}
+                              {!isEditing && (
+                                <button onClick={() => startEdit(key, price)} className="text-[#A07830] hover:text-[#8a6428] transition-colors">
+                                  <Icon name="Pencil" size={11} />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                          {isEditing ? (
+                            <div className="flex items-center gap-1">
+                              <input
+                                autoFocus
+                                type="number"
+                                value={editValue}
+                                onChange={e => setEditValue(e.target.value)}
+                                onKeyDown={e => { if (e.key === "Enter") saveEdit(key); if (e.key === "Escape") setEditingKey(null); }}
+                                className="w-full border border-[#A07830] bg-white px-2 py-1 font-body text-sm text-[#1A1410] focus:outline-none"
+                              />
+                              <button onClick={() => saveEdit(key)} className="bg-[#A07830] text-white px-2 py-1 font-body text-xs">✓</button>
+                              <button onClick={() => setEditingKey(null)} className="border border-[#ede8df] px-2 py-1 font-body text-xs text-[#9e9080]">✕</button>
+                            </div>
+                          ) : (
+                            <div className="flex items-baseline gap-1">
+                              <p className="font-display text-xl text-[#1A1410]">
+                                {price.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                              </p>
+                              {isManual && <span className="font-body text-[10px] text-[#A07830]">●</span>}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 mb-6">
