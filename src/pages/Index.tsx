@@ -513,21 +513,19 @@ const Index = () => {
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 {[
                   { icon: "Award", title: "Качество", desc: "Только сертифицированные металлы" },
                   { icon: "Lock", title: "Надёжность", desc: "Полное юридическое сопровождение" },
                   { icon: "Eye", title: "Прозрачность", desc: "Честные цены без скрытых комиссий" },
                   { icon: "HeartHandshake", title: "Партнёрство", desc: "Долгосрочные отношения с клиентом" },
                 ].map(p => (
-                  <div key={p.title} className="flex gap-3 items-start">
-                    <div className="w-8 h-8 border border-[#ede8df] flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Icon name={p.icon} fallback="Star" size={14} className="text-[#A07830]" />
+                  <div key={p.title} className="border border-[#ede8df] p-5 bg-white">
+                    <div className="w-10 h-10 border border-[#ede8df] flex items-center justify-center mb-4">
+                      <Icon name={p.icon} fallback="Star" size={20} className="text-[#A07830]" />
                     </div>
-                    <div>
-                      <p className="font-body text-sm font-medium text-[#1A1410]">{p.title}</p>
-                      <p className="font-body text-xs text-[#9e9080] mt-0.5">{p.desc}</p>
-                    </div>
+                    <p className="font-display text-xl text-[#1A1410] mb-1">{p.title}</p>
+                    <p className="font-body text-sm text-[#9e9080]">{p.desc}</p>
                   </div>
                 ))}
               </div>
