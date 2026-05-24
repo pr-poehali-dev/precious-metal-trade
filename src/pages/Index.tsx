@@ -391,9 +391,9 @@ const Index = () => {
                   </div>
                   <p className="font-body text-sm text-[#6b5e52] leading-relaxed mb-6">{m.desc}</p>
 
-                  {/* Цены Купить / Продать */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {(["buy", "sell"] as const).map(type => {
+                  {/* Цена продажи */}
+                  <div className="mb-4">
+                    {(["sell"] as const).map(type => {
                       const key = `${m.id}_${type}`;
                       const price = getPrice(m.id, type);
                       const isManual = type === "buy" ? manualBuy[m.id] !== undefined : manualSell[m.id] !== undefined;
