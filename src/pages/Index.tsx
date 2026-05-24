@@ -636,16 +636,10 @@ const Index = () => {
                           <button onClick={() => setEditingKey(null)} className="border border-[#ede8df] px-3 py-2 font-body text-xs text-[#9e9080]">✕</button>
                         </div>
                       ) : (
-                        <div>
-                          <div className="flex items-baseline gap-2">
-                            <p className="font-display text-3xl text-[#1A1410]">
-                              {price.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
-                            </p>
-                            {isManual
-                              ? <span className="font-body text-xs text-[#A07830]">● вручную</span>
-                              : <span className="font-body text-xs text-[#9e9080]">ЦБ РФ − 4%</span>
-                            }
-                          </div>
+                        <div className="flex items-baseline gap-2">
+                          <p className="font-display text-3xl text-[#1A1410]">
+                            {price.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                          </p>
                         </div>
                       )}
                     </div>
