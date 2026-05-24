@@ -80,15 +80,25 @@ const Index = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [manualPrices, setManualPrices] = useState<Record<string, number>>({});
+  const [cbDate, setCbDate] = useState<string | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrices(prev => prev.map((p, i) => {
-        const metal = METALS[i];
-        if (manualPrices[metal.id] !== undefined) return manualPrices[metal.id];
-        return +(p * (1 + (Math.random() - 0.5) * 0.002)).toFixed(2);
-      }));
-    }, 3000);
+    const fetchCbPrices = async () => {
+      try {
+        const res = await fetch("https://functions.poehali.dev/ec611c68-8981-4ab8-8be8-6d1248f75d5b");
+        const data = await res.json();
+        setPrices(prev => prev.map((p, i) => {
+          const metal = METALS[i];
+          if (manualPrices[metal.id] !== undefined) return manualPrices[metal.id];
+          if (metal.id === "gold" && data.gold) return data.gold.buy;
+          if (metal.id === "silver" && data.silver) return data.silver.buy;
+          return p;
+        }));
+        if (data.gold?.date) setCbDate(data.gold.date);
+      } catch (e) { console.error(e); }
+    };
+    fetchCbPrices();
+    const interval = setInterval(fetchCbPrices, 60000);
     return () => clearInterval(interval);
   }, [manualPrices]);
 
@@ -124,7 +134,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#faf9f7]">
       {/* Ticker */}
-      <div className="bg-[#1A1410] text-[#C8A050] py-2 overflow-hidden">
+      <div className="bg-[#1A1410] text-[#C8A050] py-2 overflow-hidden relative">
+        {cbDate && (
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 font-body text-[10px] text-[#6b5e52] tracking-wider z-10">
+            ЦБ РФ · {cbDate}
+          </span>
+        )}
         <div className="flex animate-ticker whitespace-nowrap">
           {[...METALS, ...METALS].map((m, i) => (
             <span key={i} className="font-body text-xs tracking-widest mx-8">
