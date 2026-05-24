@@ -461,6 +461,25 @@ const Index = () => {
               </div>
             ))}
           </div>
+
+          {/* Как купить металл */}
+          <section className="bg-[#1A1410] p-12 mt-20">
+            <h2 className="font-display text-4xl text-white text-center mb-12">Как купить металл</h2>
+            <div className="grid md:grid-cols-4 gap-8">
+              {[
+                { num: "01", title: "Заявка", desc: "Выберите металл и оставьте заявку на сайте или по телефону" },
+                { num: "02", title: "Подтверждение", desc: "Мы свяжемся и зафиксируем цену по актуальным котировкам" },
+                { num: "03", title: "Оплата", desc: "Удобный способ оплаты — наличными или банковским переводом" },
+                { num: "04", title: "Получение", desc: "Передача металла с документами и сертификатами в день сделки" },
+              ].map(s => (
+                <div key={s.num} className="text-center">
+                  <p className="font-display text-5xl text-[#A07830] mb-4">{s.num}</p>
+                  <h3 className="font-display text-xl text-white mb-2">{s.title}</h3>
+                  <p className="font-body text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
         </main>
       )}
 
