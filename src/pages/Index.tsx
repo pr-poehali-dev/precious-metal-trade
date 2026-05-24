@@ -341,24 +341,22 @@ const Index = () => {
           </section>
 
           {/* Features */}
-          <section className="bg-[#1A1410] py-20">
-            <div className="max-w-6xl mx-auto px-6">
-              <h2 className="font-display text-3xl md:text-5xl text-white text-center mb-12 md:mb-16">Почему выбирают нас</h2>
-              <div className="grid md:grid-cols-3 gap-8">
-                {[
-                  { icon: "ShieldCheck", title: "Полная гарантия и прозрачность сделки", desc: "Каждая сделка документируется от начала до конца. Никаких скрытых условий — только честные договорённости." },
-                  { icon: "TrendingUp", title: "Лучшие котировки", desc: "Цены обновляются в реальном времени. Мы работаем с минимальными спредами на рынке." },
-                  { icon: "Lock", title: "Безопасная сделка", desc: "Гарантия конфиденциальности на каждом этапе. Ваши данные и условия сделки остаются строго между нами." },
-                ].map(f => (
-                  <div key={f.title} className="text-center">
-                    <div className="w-12 h-12 border border-[#A07830] flex items-center justify-center mx-auto mb-6">
-                      <Icon name={f.icon} fallback="Star" size={20} className="text-[#C8A050]" />
-                    </div>
-                    <h3 className="font-display text-2xl text-white mb-3">{f.title}</h3>
-                    <p className="font-body text-sm text-[#9e9080] leading-relaxed">{f.desc}</p>
+          <section className="bg-[#1A1410] p-6 md:p-12">
+            <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Почему выбирают нас</h2>
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+              {[
+                { icon: "ShieldCheck", title: "Полная гарантия и прозрачность сделки", desc: "Каждая сделка документируется от начала до конца. Никаких скрытых условий — только честные договорённости." },
+                { icon: "TrendingUp", title: "Лучшие котировки", desc: "Цены обновляются в реальном времени. Мы работаем с минимальными спредами на рынке." },
+                { icon: "Lock", title: "Безопасная сделка", desc: "Гарантия конфиденциальности на каждом этапе. Ваши данные и условия сделки остаются строго между нами." },
+              ].map(f => (
+                <div key={f.title} className="text-center">
+                  <div className="w-12 h-12 border border-[#A07830] flex items-center justify-center mx-auto mb-4 md:mb-6">
+                    <Icon name={f.icon} fallback="Star" size={20} className="text-[#C8A050]" />
                   </div>
-                ))}
-              </div>
+                  <h3 className="font-display text-lg md:text-2xl text-white mb-2 md:mb-3">{f.title}</h3>
+                  <p className="font-body text-xs md:text-sm text-[#9e9080] leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
             </div>
           </section>
         </main>
