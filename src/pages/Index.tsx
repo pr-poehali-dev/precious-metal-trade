@@ -242,7 +242,7 @@ const Index = () => {
               />
               <div className="absolute -bottom-4 -left-4 bg-white border border-[#ede8df] p-4 shadow-lg">
                 <p className="font-body text-xs text-[#9e9080] tracking-widest mb-1">ЗОЛОТО · XAU</p>
-                <p className="font-display text-2xl text-[#1A1410]">{prices[0].toLocaleString("ru-RU")} ₽</p>
+                <p className="font-display text-2xl text-[#1A1410]">{getPrice("gold", "buy").toLocaleString("ru-RU")} ₽</p>
                 <p className="font-body text-xs text-green-600">▲ +1.24% сегодня</p>
               </div>
             </div>
@@ -276,7 +276,7 @@ const Index = () => {
                       <div className="flex items-end justify-between">
                         <div>
                           <p className="font-display text-3xl font-light text-[#1A1410]">
-                            {prices[i].toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                            {getPrice(m.id, "buy").toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
                           </p>
                           <p className="font-body text-xs text-[#9e9080] mt-0.5">{m.unit}</p>
                         </div>
@@ -312,7 +312,7 @@ const Index = () => {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <p className="font-display text-4xl text-[#1A1410]">
-                    {prices[METALS.findIndex(m => m.id === selectedMetal.id)].toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                    {getPrice(selectedMetal.id, "buy").toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
                   </p>
                   <p className="font-body text-sm text-[#9e9080] mt-1">{selectedMetal.unit}</p>
                 </div>
