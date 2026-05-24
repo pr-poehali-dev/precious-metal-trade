@@ -221,7 +221,7 @@ const Index = () => {
         <main>
           <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-6">Профессиональная торговля</p>
+              <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-6">Профессиональная торговля драгоценными металлами</p>
               <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-[#1A1410] leading-tight mb-6">
                 Драгоценные<br />
                 <em className="text-[#A07830] not-italic">металлы</em><br />
