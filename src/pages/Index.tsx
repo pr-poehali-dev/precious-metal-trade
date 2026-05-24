@@ -222,8 +222,8 @@ const Index = () => {
       <header className="bg-white border-b border-[#ede8df] sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <button onClick={() => setActive("home")} className="text-left flex items-center gap-3">
-            <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-              <img src="https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/bucket/d5c8588a-6852-4174-bc23-d2058b9a509b.jpg" alt="Логотип" className="w-8 h-8 object-contain" />
+            <div className="w-8 h-8 bg-[#1A1410] flex items-center justify-center flex-shrink-0">
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-lg text-[#C8A050] leading-none">З</span>
             </div>
             <div className="leading-none">
               <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-2xl text-[#1A1410]">Золотов</span>
@@ -794,8 +794,8 @@ const Index = () => {
       <footer className="bg-[#1A1410] border-t border-[#2a2018] py-10 mt-auto">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <button onClick={() => setActive("home")} className="flex items-center gap-3">
-            <div className="w-7 h-7 flex items-center justify-center flex-shrink-0">
-              <img src="https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/bucket/d5c8588a-6852-4174-bc23-d2058b9a509b.jpg" alt="Логотип" className="w-7 h-7 object-contain brightness-0 invert" />
+            <div className="w-7 h-7 bg-[#A07830] flex items-center justify-center flex-shrink-0">
+              <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-base text-[#1A1410] leading-none">З</span>
             </div>
             <div className="leading-none text-left">
               <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-xl text-white">Золотов</span>
