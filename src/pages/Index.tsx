@@ -341,7 +341,8 @@ const Index = () => {
           </section>
 
           {/* Features */}
-          <section className="bg-[#1A1410] p-6 md:p-12 max-w-6xl mx-auto mt-20">
+          <section className="mt-20 px-6">
+            <div className="bg-[#1A1410] p-6 md:p-12 max-w-6xl mx-auto">
             <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Почему выбирают нас</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {[
@@ -357,6 +358,7 @@ const Index = () => {
                   <p className="font-body text-xs md:text-sm text-[#9e9080] leading-relaxed">{f.desc}</p>
                 </div>
               ))}
+            </div>
             </div>
           </section>
         </main>
