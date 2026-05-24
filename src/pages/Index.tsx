@@ -117,7 +117,10 @@ const Index = () => {
   const getPrice = (id: string, type: "buy" | "sell") => {
     const fallback = METALS.find(m => m.id === id)?.price ?? SELL_ITEMS.find(m => m.id === id)?.defaultPrice ?? 0;
     if (type === "buy") return manualBuy[id] ?? cbBuy[id] ?? fallback;
-    return manualSell[id] ?? cbSell[id] ?? fallback;
+    // Цена выкупа = котировка ЦБ минус 4%, если не задана вручную
+    if (manualSell[id] !== undefined) return manualSell[id];
+    const cbPrice = cbBuy[id] ?? fallback;
+    return Math.round(cbPrice * 0.96 * 100) / 100;
   };
 
   const startEdit = (key: string, val: number) => {
@@ -633,11 +636,16 @@ const Index = () => {
                           <button onClick={() => setEditingKey(null)} className="border border-[#ede8df] px-3 py-2 font-body text-xs text-[#9e9080]">✕</button>
                         </div>
                       ) : (
-                        <div className="flex items-baseline gap-2">
-                          <p className="font-display text-3xl text-[#1A1410]">
-                            {price.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
-                          </p>
-                          {isManual && <span className="font-body text-xs text-[#A07830]">● вручную</span>}
+                        <div>
+                          <div className="flex items-baseline gap-2">
+                            <p className="font-display text-3xl text-[#1A1410]">
+                              {price.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                            </p>
+                            {isManual
+                              ? <span className="font-body text-xs text-[#A07830]">● вручную</span>
+                              : <span className="font-body text-xs text-[#9e9080]">ЦБ РФ − 4%</span>
+                            }
+                          </div>
                         </div>
                       )}
                     </div>
