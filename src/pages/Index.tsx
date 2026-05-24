@@ -341,9 +341,9 @@ const Index = () => {
           </section>
 
           {/* Features */}
-          <section className="bg-[#1A1410] p-6 md:p-12">
+          <section className="bg-[#1A1410] p-6 md:p-12 max-w-6xl mx-auto mt-20">
             <h2 className="font-display text-2xl md:text-4xl text-white text-center mb-8 md:mb-12">Почему выбирают нас</h2>
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {[
                 { icon: "ShieldCheck", title: "Полная гарантия и прозрачность сделки", desc: "Каждая сделка документируется от начала до конца. Никаких скрытых условий — только честные договорённости." },
                 { icon: "TrendingUp", title: "Лучшие котировки", desc: "Цены обновляются в реальном времени. Мы работаем с минимальными спредами на рынке." },
