@@ -70,7 +70,7 @@ function LargeChart({ metal }: { metal: typeof METALS[0] }) {
   );
 }
 
-type Section = "home" | "catalog" | "about" | "contacts";
+type Section = "home" | "catalog" | "sell" | "about" | "contacts";
 
 const Index = () => {
   const [active, setActive] = useState<Section>("home");
@@ -130,7 +130,8 @@ const Index = () => {
 
   const nav: { key: Section; label: string }[] = [
     { key: "home", label: "Главная" },
-    { key: "catalog", label: "Каталог" },
+    { key: "catalog", label: "Купить" },
+    { key: "sell", label: "Продать" },
     { key: "about", label: "О компании" },
     { key: "contacts", label: "Контакты" },
   ];
@@ -512,6 +513,106 @@ const Index = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+        </main>
+      )}
+
+      {/* SELL */}
+      {active === "sell" && (
+        <main className="max-w-6xl mx-auto px-6 py-20">
+          <div className="mb-16">
+            <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Выкуп металлов</p>
+            <h1 className="font-display text-5xl text-[#1A1410]">Продать металл</h1>
+          </div>
+
+          {/* Карточки с ценами выкупа */}
+          <div className="grid md:grid-cols-2 gap-8 mb-20">
+            {METALS.map(m => (
+              <div key={m.id} className="bg-white border border-[#ede8df] p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="font-display text-3xl text-[#1A1410]">{m.name}</h2>
+                    <p className="font-body text-xs text-[#9e9080] tracking-widest mt-1">{m.symbol} · {m.purity} проба</p>
+                  </div>
+                  <div className="w-12 h-12 bg-[#faf9f7] border border-[#ede8df] flex items-center justify-center">
+                    <Icon name="TrendingDown" size={20} className="text-[#A07830]" />
+                  </div>
+                </div>
+
+                {/* Цена выкупа с редактированием */}
+                {(["sell"] as const).map(type => {
+                  const key = `${m.id}_${type}`;
+                  const price = getPrice(m.id, type);
+                  const isManual = manualSell[m.id] !== undefined;
+                  const isEditing = editingKey === key;
+                  return (
+                    <div key={type} className="border border-[#ede8df] p-4 bg-[#faf9f7] mb-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="font-body text-xs text-[#9e9080] tracking-wider uppercase">Цена выкупа за грамм</p>
+                        <div className="flex items-center gap-2">
+                          {isManual && (
+                            <button onClick={() => resetManual(m.id, "sell")} className="font-body text-xs text-[#9e9080] hover:text-red-500 transition-colors">Сбросить</button>
+                          )}
+                          {!isEditing && (
+                            <button onClick={() => startEdit(key, price)} className="flex items-center gap-1 font-body text-xs text-[#A07830] hover:text-[#8a6428] transition-colors">
+                              <Icon name="Pencil" size={11} /> Изменить
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      {isEditing ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            autoFocus
+                            type="number"
+                            value={editValue}
+                            onChange={e => setEditValue(e.target.value)}
+                            onKeyDown={e => { if (e.key === "Enter") saveEdit(key); if (e.key === "Escape") setEditingKey(null); }}
+                            className="flex-1 border border-[#A07830] bg-white px-3 py-2 font-display text-2xl text-[#1A1410] focus:outline-none"
+                          />
+                          <span className="font-display text-xl text-[#9e9080]">₽</span>
+                          <button onClick={() => saveEdit(key)} className="bg-[#A07830] text-white px-3 py-2 font-body text-xs tracking-wider hover:bg-[#8a6428] transition-colors">ОК</button>
+                          <button onClick={() => setEditingKey(null)} className="border border-[#ede8df] px-3 py-2 font-body text-xs text-[#9e9080]">✕</button>
+                        </div>
+                      ) : (
+                        <div className="flex items-baseline gap-2">
+                          <p className="font-display text-3xl text-[#1A1410]">
+                            {price.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                          </p>
+                          {isManual && <span className="font-body text-xs text-[#A07830]">● вручную</span>}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
+                <button
+                  onClick={() => setActive("contacts")}
+                  className="w-full bg-[#1A1410] text-[#C8A050] font-body text-sm py-3 tracking-wider hover:bg-[#2a2018] transition-colors"
+                >
+                  Оставить заявку на продажу
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Как это работает */}
+          <section className="bg-[#1A1410] p-12">
+            <h2 className="font-display text-4xl text-white text-center mb-12">Как продать металл</h2>
+            <div className="grid md:grid-cols-4 gap-8">
+              {[
+                { num: "01", title: "Заявка", desc: "Оставьте заявку с указанием металла и количества" },
+                { num: "02", title: "Оценка", desc: "Мы свяжемся и согласуем условия по актуальной цене" },
+                { num: "03", title: "Проверка", desc: "Экспертиза подлинности и пробы металла" },
+                { num: "04", title: "Расчёт", desc: "Оплата в день сделки — наличными или переводом" },
+              ].map(s => (
+                <div key={s.num} className="text-center">
+                  <p className="font-display text-5xl text-[#A07830] mb-4">{s.num}</p>
+                  <h3 className="font-display text-xl text-white mb-2">{s.title}</h3>
+                  <p className="font-body text-sm text-[#9e9080] leading-relaxed">{s.desc}</p>
+                </div>
+              ))}
             </div>
           </section>
         </main>
