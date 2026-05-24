@@ -87,6 +87,11 @@ const Index = () => {
   const [manualBuy, setManualBuy] = useState<Record<string, number>>({});
   const [manualSell, setManualSell] = useState<Record<string, number>>({});
   const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [pendingEditKey, setPendingEditKey] = useState<{ key: string; val: number } | null>(null);
   const [editValue, setEditValue] = useState("");
   const [cbDate, setCbDate] = useState<string | null>(null);
 
@@ -116,8 +121,30 @@ const Index = () => {
   };
 
   const startEdit = (key: string, val: number) => {
+    if (!isAdmin) {
+      setPendingEditKey({ key, val });
+      setShowPasswordModal(true);
+      setPasswordInput("");
+      setPasswordError(false);
+      return;
+    }
     setEditingKey(key);
     setEditValue(String(val));
+  };
+
+  const submitPassword = () => {
+    if (passwordInput === "Shumakulik22!") {
+      setIsAdmin(true);
+      setShowPasswordModal(false);
+      if (pendingEditKey) {
+        const { key, val } = pendingEditKey;
+        setEditingKey(key);
+        setEditValue(String(val));
+        setPendingEditKey(null);
+      }
+    } else {
+      setPasswordError(true);
+    }
   };
 
   const saveEdit = (key: string) => {
@@ -738,6 +765,34 @@ const Index = () => {
           <p className="font-body text-xs text-[#4a3f35] tracking-wider">© 2024 Золотов. Все права защищены.</p>
         </div>
       </footer>
+
+      {/* Модалка пароля */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white p-8 max-w-sm w-full">
+            <h3 className="font-display text-2xl text-[#1A1410] mb-2">Вход для администратора</h3>
+            <p className="font-body text-sm text-[#9e9080] mb-6">Введите пароль для изменения цен</p>
+            <input
+              autoFocus
+              type="password"
+              value={passwordInput}
+              placeholder="Пароль"
+              onChange={e => { setPasswordInput(e.target.value); setPasswordError(false); }}
+              onKeyDown={e => { if (e.key === "Enter") submitPassword(); if (e.key === "Escape") setShowPasswordModal(false); }}
+              className={`w-full border px-4 py-3 font-body text-sm text-[#1A1410] focus:outline-none mb-2 ${passwordError ? "border-red-400" : "border-[#ede8df] focus:border-[#A07830]"}`}
+            />
+            {passwordError && <p className="font-body text-xs text-red-500 mb-4">Неверный пароль</p>}
+            <div className="flex gap-3 mt-4">
+              <button onClick={submitPassword} className="flex-1 bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors">
+                Войти
+              </button>
+              <button onClick={() => setShowPasswordModal(false)} className="flex-1 border border-[#ede8df] font-body text-sm py-3 text-[#9e9080] hover:border-[#9e9080] transition-colors">
+                Отмена
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
