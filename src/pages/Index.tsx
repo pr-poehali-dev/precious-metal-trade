@@ -648,7 +648,7 @@ const Index = () => {
 
                 <button
                   onClick={() => setActive("contacts")}
-                  className="w-full bg-[#1A1410] text-[#C8A050] font-body text-sm py-3 tracking-wider hover:bg-[#2a2018] transition-colors"
+                  className="w-full bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
                 >
                   Оставить заявку на продажу
                 </button>
