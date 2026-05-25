@@ -186,6 +186,7 @@ const Index = () => {
   const [usdRate, setUsdRate] = useState<number | null>(null);
   const [usdHistory, setUsdHistory] = useState<number[]>([]);
   const [usdOpen, setUsdOpen] = useState<number | null>(null);
+  const [usdtRate, setUsdtRate] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCbPrices = async () => {
@@ -207,6 +208,7 @@ const Index = () => {
           });
         }
         if (data.usd_open) setUsdOpen(data.usd_open);
+        if (data.usdt) setUsdtRate(data.usdt);
       } catch (e) { console.error(e); }
     };
     fetchCbPrices();
@@ -312,6 +314,15 @@ const Index = () => {
                 {usdRate.toLocaleString("ru-RU", { minimumFractionDigits: 4 })} ₽
               </span>
               &nbsp;<span className="text-[#C8A050] text-[10px]">MOEX</span>
+            </span>
+          )}
+          {usdtRate && (
+            <span className="font-body text-xs tracking-widest mx-8">
+              USDT/RUB&nbsp;
+              <span className="text-white font-medium">
+                {usdtRate.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+              </span>
+              &nbsp;<span className="text-[#C8A050] text-[10px]">Binance</span>
             </span>
           )}
         </div>
@@ -476,6 +487,27 @@ const Index = () => {
                     </div>
                   );
                 })()}
+
+                {/* Карточка USDT */}
+                {usdtRate && (
+                  <div className="bg-white border border-[#ede8df] p-6 hover:shadow-lg transition-all duration-300">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="font-body text-xs text-[#9e9080] tracking-widest uppercase mb-1">USDT/RUB</p>
+                        <h3 className="font-display text-2xl text-[#1A1410]">Tether</h3>
+                      </div>
+                      <span className="font-body text-[10px] text-[#F0B90B] tracking-widest border border-[#ede8df] px-2 py-1">Binance</span>
+                    </div>
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <p className="font-display text-3xl font-light text-[#1A1410]">
+                          {usdtRate.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
+                        </p>
+                        <p className="font-body text-xs text-[#9e9080] mt-0.5">за 1 USDT</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </section>

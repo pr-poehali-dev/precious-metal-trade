@@ -57,12 +57,23 @@ def handler(event: dict, context) -> dict:
     except Exception:
         pass
 
+    usdt_rate = None
+    try:
+        binance_url = 'https://api.binance.com/api/v3/ticker/price?symbol=USDTRUB'
+        binance_req = urllib.request.Request(binance_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(binance_req, timeout=10) as resp:
+            binance_data = json.loads(resp.read().decode('utf-8'))
+        usdt_rate = float(binance_data['price'])
+    except Exception:
+        pass
+
     result = {
         'gold': gold,
         'silver': silver,
         'usd': usd_rate,
         'usd_open': usd_open,
-        'source': 'MOEX',
+        'usdt': usdt_rate,
+        'source': 'MOEX + Binance',
     }
 
     return {

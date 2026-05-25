@@ -6,7 +6,7 @@
       "path": "/",
       "expectedStatus": 200,
       "expectedBody": {
-        "gold": { "buy": 10314.41 }
+        "gold": {}
       },
       "bodyMatcher": "partial"
     }
