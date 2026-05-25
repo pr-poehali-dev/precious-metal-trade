@@ -59,11 +59,13 @@ def handler(event: dict, context) -> dict:
 
     usdt_rate = None
     try:
-        binance_url = 'https://api.binance.com/api/v3/ticker/price?symbol=USDTRUB'
-        binance_req = urllib.request.Request(binance_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(binance_req, timeout=10) as resp:
-            binance_data = json.loads(resp.read().decode('utf-8'))
-        usdt_rate = float(binance_data['price'])
+        exmo_url = 'https://api.exmo.com/v1.1/ticker'
+        exmo_req = urllib.request.Request(exmo_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(exmo_req, timeout=10) as resp:
+            exmo_data = json.loads(resp.read().decode('utf-8'))
+        usdt_rub = exmo_data.get('USDT_RUB', {})
+        if usdt_rub:
+            usdt_rate = float(usdt_rub['last_trade'])
     except Exception:
         pass
 
