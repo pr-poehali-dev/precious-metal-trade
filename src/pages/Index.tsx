@@ -429,7 +429,7 @@ const Index = () => {
                 </div>
                 <div className="hidden md:flex items-center gap-2 text-[#9e9080]">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="font-body text-xs tracking-widest">Обновляется каждые 3 с</span>
+                  <span className="font-body text-xs tracking-widest">Обновляется каждую минуту</span>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
