@@ -390,28 +390,16 @@ const Index = () => {
               <p className="font-body text-[#6b5e52] leading-relaxed mb-8 max-w-sm">
                 Золото и серебро с гарантией качества. Живые котировки, сертифицированные слитки.
               </p>
-              <div className="flex gap-4 flex-wrap">
+              <div className="flex gap-4">
                 <button
                   onClick={() => setActive("catalog")}
-                  className="hidden md:block bg-[#A07830] text-white font-body text-sm px-8 py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
-                >
-                  Перейти в каталог
-                </button>
-                <button
-                  onClick={() => setActive("about")}
-                  className="hidden md:block border border-[#A07830] text-[#A07830] font-body text-sm px-8 py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors"
-                >
-                  О нас
-                </button>
-                <button
-                  onClick={() => setActive("catalog")}
-                  className="md:hidden flex-1 bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors text-center"
+                  className="flex-1 md:flex-none bg-[#A07830] text-white font-body text-sm px-8 py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
                 >
                   Купить
                 </button>
                 <button
                   onClick={() => setActive("sell")}
-                  className="md:hidden flex-1 border border-[#A07830] text-[#A07830] font-body text-sm py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors text-center"
+                  className="flex-1 md:flex-none border border-[#A07830] text-[#A07830] font-body text-sm px-8 py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors"
                 >
                   Продать
                 </button>
