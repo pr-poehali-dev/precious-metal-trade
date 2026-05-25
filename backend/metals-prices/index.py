@@ -1,11 +1,23 @@
 import urllib.request
-import xml.etree.ElementTree as ET
 import json
-from datetime import datetime, timedelta
+
+
+def fetch_moex(symbol: str) -> dict:
+    url = f'https://iss.moex.com/iss/engines/currency/markets/selt/boards/CETS/securities/{symbol}.json?iss.meta=off&iss.only=marketdata&marketdata.columns=LAST,OPEN'
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+    rows = data.get('marketdata', {}).get('data', [])
+    if rows and rows[0]:
+        last = rows[0][0]
+        open_price = rows[0][1]
+        rate = float(last) if last else float(open_price) if open_price else None
+        return {'buy': rate, 'sell': rate, 'open': float(open_price) if open_price else rate}
+    return {'buy': None, 'sell': None, 'open': None}
 
 
 def handler(event: dict, context) -> dict:
-    """Получает котировки золота и серебра с сайта ЦБ РФ в рублях за грамм"""
+    """Получает котировки золота, серебра и доллара с Московской биржи (MOEX)"""
 
     if event.get('httpMethod') == 'OPTIONS':
         return {
@@ -19,61 +31,38 @@ def handler(event: dict, context) -> dict:
             'body': ''
         }
 
-    today = datetime.now()
-    # ЦБ не публикует данные в выходные — берём диапазон последних 7 дней
-    date_from = (today - timedelta(days=7)).strftime('%d/%m/%Y')
-    date_to = today.strftime('%d/%m/%Y')
-
-    url = f'https://www.cbr.ru/scripts/xml_metall.asp?date_req1={date_from}&date_req2={date_to}'
-
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req, timeout=10) as response:
-        raw = response.read().decode('windows-1251')
-
-    root = ET.fromstring(raw)
-
-    # Берём последние записи по каждому металлу
-    metals = {}
-    for record in root.findall('Record'):
-        code = record.get('Code')
-        date = record.get('Date')
-        buy = record.find('Buy').text.replace(',', '.')
-        sell = record.find('Sell').text.replace(',', '.')
-        metals[code] = {
-            'date': date,
-            'buy': float(buy),
-            'sell': float(sell),
-        }
-
-    # Курс доллара с Московской биржи (MOEX) — реальное время
+    gold = None
+    silver = None
     usd_rate = None
     usd_open = None
+
     try:
-        moex_url = 'https://iss.moex.com/iss/engines/currency/markets/selt/boards/CETS/securities/USD000UTSTOM.json?iss.meta=off&iss.only=marketdata&marketdata.columns=LAST,OPEN'
-        moex_req = urllib.request.Request(moex_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(moex_req, timeout=10) as moex_resp:
-            moex_data = json.loads(moex_resp.read().decode('utf-8'))
-        data_rows = moex_data.get('marketdata', {}).get('data', [])
-        if data_rows:
-            last = data_rows[0][0]
-            open_price = data_rows[0][1]
-            if last:
-                usd_rate = float(last)
-            elif open_price:
-                usd_rate = float(open_price)
-            if open_price:
-                usd_open = float(open_price)
-            else:
-                usd_open = usd_rate
+        g = fetch_moex('GLDRUB_TOM')
+        if g['buy']:
+            gold = {'buy': g['buy'], 'sell': g['sell']}
+    except Exception:
+        pass
+
+    try:
+        s = fetch_moex('SLVRUB_TOM')
+        if s['buy']:
+            silver = {'buy': s['buy'], 'sell': s['sell']}
+    except Exception:
+        pass
+
+    try:
+        u = fetch_moex('USD000UTSTOM')
+        usd_rate = u['buy']
+        usd_open = u['open']
     except Exception:
         pass
 
     result = {
-        'gold': metals.get('1'),    # Золото, руб/грамм
-        'silver': metals.get('2'),  # Серебро, руб/грамм
-        'usd': usd_rate,            # Курс доллара, руб
-        'usd_open': usd_open,       # Курс открытия
-        'source': 'ЦБ РФ',
+        'gold': gold,
+        'silver': silver,
+        'usd': usd_rate,
+        'usd_open': usd_open,
+        'source': 'MOEX',
     }
 
     return {

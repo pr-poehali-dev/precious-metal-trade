@@ -289,7 +289,7 @@ const Index = () => {
       <div className="bg-[#1A1410] text-[#C8A050] py-2 overflow-hidden relative">
         {cbDate && (
           <span className="absolute right-4 top-1/2 -translate-y-1/2 font-body text-[10px] text-[#6b5e52] tracking-wider z-10">
-            ЦБ РФ · {cbDate}
+            MOEX · {cbDate}
           </span>
         )}
         <div className="flex animate-ticker whitespace-nowrap">
