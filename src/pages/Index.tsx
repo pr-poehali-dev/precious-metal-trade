@@ -357,17 +357,17 @@ const Index = () => {
             ))}
           </nav>
 
-          <button className="md:hidden text-[#1A1410]" onClick={() => setMenuOpen(!menuOpen)}>
-            <Icon name={menuOpen ? "X" : "Menu"} size={22} />
+          <button className="md:hidden text-[#1A1410] p-2 -mr-2" onClick={() => setMenuOpen(!menuOpen)}>
+            <Icon name={menuOpen ? "X" : "Menu"} size={24} />
           </button>
         </div>
         {menuOpen && (
-          <div className="md:hidden bg-white border-t border-[#ede8df] px-6 py-4 flex flex-col gap-4">
+          <div className="md:hidden bg-white border-t border-[#ede8df] px-6 py-2 flex flex-col">
             {nav.map(n => (
               <button
                 key={n.key}
                 onClick={() => { setActive(n.key); setMenuOpen(false); }}
-                className={`font-body text-sm tracking-wider text-left ${active === n.key ? "text-[#A07830]" : "text-[#9e9080]"}`}
+                className={`font-body text-sm tracking-wider text-left py-3 border-b border-[#f5f0ea] last:border-0 ${active === n.key ? "text-[#A07830]" : "text-[#6b5e52]"}`}
               >
                 {n.label}
               </button>
@@ -379,7 +379,7 @@ const Index = () => {
       {/* HOME */}
       {active === "home" && (
         <main>
-          <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 grid md:grid-cols-2 gap-12 items-center">
+          <section className="max-w-6xl mx-auto px-6 pt-10 pb-10 md:pt-20 md:pb-16 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
               <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-6">Профессиональная торговля драгоценными металлами</p>
               <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-[#1A1410] leading-tight mb-6">
@@ -420,12 +420,12 @@ const Index = () => {
           </section>
 
           {/* Live Prices */}
-          <section className="bg-white border-y border-[#ede8df] py-16">
+          <section className="bg-white border-y border-[#ede8df] py-8 md:py-16">
             <div className="max-w-6xl mx-auto px-6">
-              <div className="flex items-center justify-between mb-10">
+              <div className="flex items-center justify-between mb-6 md:mb-10">
                 <div>
                   <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Live</p>
-                  <h2 className="font-display text-4xl text-[#1A1410]">Котировки в реальном времени</h2>
+                  <h2 className="font-display text-2xl md:text-4xl text-[#1A1410]">Котировки в реальном времени</h2>
                 </div>
                 <div className="hidden md:flex items-center gap-2 text-[#9e9080]">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -513,10 +513,10 @@ const Index = () => {
           </section>
 
           {/* Chart Section */}
-          <section className="max-w-6xl mx-auto px-6 py-16">
-            <div className="mb-8">
+          <section className="max-w-6xl mx-auto px-6 py-8 md:py-16">
+            <div className="mb-6 md:mb-8">
               <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Динамика цен</p>
-              <h2 className="font-display text-4xl text-[#1A1410]">График за 30 дней</h2>
+              <h2 className="font-display text-2xl md:text-4xl text-[#1A1410]">График за 30 дней</h2>
             </div>
             <div className="flex gap-3 mb-8 flex-wrap">
               {METALS.map(m => (
@@ -532,7 +532,7 @@ const Index = () => {
             <div className="bg-white border border-[#ede8df] p-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <p className="font-display text-4xl text-[#1A1410]">
+                  <p className="font-display text-2xl md:text-4xl text-[#1A1410]">
                     {getPrice(selectedMetal.id, "buy").toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
                   </p>
                   <p className="font-body text-sm text-[#9e9080] mt-1">{selectedMetal.unit}</p>
@@ -576,12 +576,12 @@ const Index = () => {
 
       {/* CATALOG */}
       {active === "catalog" && (
-        <main className="max-w-6xl mx-auto px-6 py-20">
-          <div className="border-b border-[#ede8df] mb-12 pb-8">
+        <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
+          <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Наши товары</p>
             <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Каталог металлов</h1>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-5 md:gap-8">
             {METALS.map((m, i) => (
               <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden group hover:shadow-xl transition-shadow duration-300">
                 <div className="relative overflow-hidden aspect-video">
@@ -594,9 +594,9 @@ const Index = () => {
                     <span className="font-body text-xs tracking-widest text-[#A07830]">{m.symbol}</span>
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h2 className="font-display text-3xl text-[#1A1410]">{m.name}</h2>
+                    <h2 className="font-display text-2xl md:text-3xl text-[#1A1410]">{m.name}</h2>
                     <span className={`font-body text-sm ${m.change >= 0 ? "text-green-600" : "text-red-500"}`}>
                       {m.change >= 0 ? "+" : ""}{m.change}%
                     </span>
@@ -698,12 +698,12 @@ const Index = () => {
 
       {/* ABOUT */}
       {active === "about" && (
-        <main className="max-w-6xl mx-auto px-6 py-20">
-          <div className="border-b border-[#ede8df] mb-12 pb-8">
+        <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
+          <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">О компании</p>
             <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Экспертиза в мире металлов</h1>
           </div>
-          <section className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <section className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
             <div>
               <p className="font-body text-[#6b5e52] leading-relaxed mb-6 text-base">
                 Золотов — профессиональный дилер драгоценных металлов с многолетним опытом работы на российском рынке. Специализируемся на инвестиционных слитках и монетах высшей пробы.
@@ -753,14 +753,14 @@ const Index = () => {
 
       {/* SELL */}
       {active === "sell" && (
-        <main className="max-w-6xl mx-auto px-6 py-20">
-          <div className="border-b border-[#ede8df] mb-12 pb-8">
+        <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
+          <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Выкуп металлов</p>
             <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Продать металл</h1>
           </div>
 
           {/* Карточки с ценами выкупа */}
-          <div className="grid md:grid-cols-2 gap-8 mb-20">
+          <div className="grid md:grid-cols-2 gap-5 md:gap-8 mb-10 md:mb-20">
             {SELL_ITEMS.map(m => (
               <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden">
                 <div className="relative aspect-video overflow-hidden">
@@ -769,10 +769,10 @@ const Index = () => {
                     <span className="font-body text-xs tracking-widest text-[#A07830]">{m.symbol} · {m.purity}</span>
                   </div>
                 </div>
-                <div className="p-8">
-                <div className="flex items-center justify-between mb-6">
+                <div className="p-4 md:p-8">
+                <div className="flex items-center justify-between mb-4 md:mb-6">
                   <div>
-                    <h2 className="font-display text-3xl text-[#1A1410]">{m.name}</h2>
+                    <h2 className="font-display text-2xl md:text-3xl text-[#1A1410]">{m.name}</h2>
                     <p className="font-body text-xs text-[#9e9080] tracking-widest mt-1">{m.purity} проба</p>
                   </div>
                   <div className="w-12 h-12 bg-[#faf9f7] border border-[#ede8df] flex items-center justify-center">
@@ -860,12 +860,12 @@ const Index = () => {
 
       {/* CONTACTS */}
       {active === "contacts" && (
-        <main className="max-w-6xl mx-auto px-6 py-20">
-          <div className="border-b border-[#ede8df] mb-12 pb-8">
+        <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
+          <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Связь с нами</p>
             <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Контакты</h1>
           </div>
-          <div className="grid md:grid-cols-2 gap-10 md:gap-16">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-16">
             <div>
               <h2 className="font-display text-2xl md:text-3xl text-[#1A1410] mb-8">Оставьте заявку</h2>
               <ContactForm />
