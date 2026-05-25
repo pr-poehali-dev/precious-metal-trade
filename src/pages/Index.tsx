@@ -393,15 +393,27 @@ const Index = () => {
               <div className="flex gap-4 flex-wrap">
                 <button
                   onClick={() => setActive("catalog")}
-                  className="bg-[#A07830] text-white font-body text-sm px-8 py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
+                  className="hidden md:block bg-[#A07830] text-white font-body text-sm px-8 py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
                 >
                   Перейти в каталог
                 </button>
                 <button
                   onClick={() => setActive("about")}
-                  className="border border-[#A07830] text-[#A07830] font-body text-sm px-8 py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors"
+                  className="hidden md:block border border-[#A07830] text-[#A07830] font-body text-sm px-8 py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors"
                 >
                   О нас
+                </button>
+                <button
+                  onClick={() => setActive("catalog")}
+                  className="md:hidden flex-1 bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors text-center"
+                >
+                  Купить
+                </button>
+                <button
+                  onClick={() => setActive("sell")}
+                  className="md:hidden flex-1 border border-[#A07830] text-[#A07830] font-body text-sm py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors text-center"
+                >
+                  Продать
                 </button>
               </div>
             </div>
