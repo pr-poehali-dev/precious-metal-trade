@@ -59,13 +59,11 @@ def handler(event: dict, context) -> dict:
 
     usdt_rate = None
     try:
-        exmo_url = 'https://api.exmo.com/v1.1/ticker'
-        exmo_req = urllib.request.Request(exmo_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(exmo_req, timeout=10) as resp:
-            exmo_data = json.loads(resp.read().decode('utf-8'))
-        usdt_rub = exmo_data.get('USDT_RUB', {})
-        if usdt_rub:
-            usdt_rate = float(usdt_rub['last_trade'])
+        cg_url = 'https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=rub'
+        cg_req = urllib.request.Request(cg_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(cg_req, timeout=10) as resp:
+            cg_data = json.loads(resp.read().decode('utf-8'))
+        usdt_rate = float(cg_data['tether']['rub'])
     except Exception:
         pass
 

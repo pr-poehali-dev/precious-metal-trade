@@ -322,7 +322,7 @@ const Index = () => {
               <span className="text-white font-medium">
                 {usdtRate.toLocaleString("ru-RU", { minimumFractionDigits: 2 })} ₽
               </span>
-              &nbsp;<span className="text-[#C8A050] text-[10px]">EXMO</span>
+              &nbsp;<span className="text-[#C8A050] text-[10px]">CoinGecko</span>
             </span>
           )}
         </div>
@@ -496,7 +496,7 @@ const Index = () => {
                         <p className="font-body text-xs text-[#9e9080] tracking-widest uppercase mb-1">USDT/RUB</p>
                         <h3 className="font-display text-2xl text-[#1A1410]">Tether</h3>
                       </div>
-                      <span className="font-body text-[10px] text-[#A07830] tracking-widest border border-[#ede8df] px-2 py-1">EXMO</span>
+                      <span className="font-body text-[10px] text-[#A07830] tracking-widest border border-[#ede8df] px-2 py-1">CoinGecko</span>
                     </div>
                     <div className="flex items-end justify-between">
                       <div>
