@@ -187,29 +187,31 @@ const Index = () => {
   const [usdHistory, setUsdHistory] = useState<number[]>([]);
   const [usdOpen, setUsdOpen] = useState<number | null>(null);
   const [usdtRate, setUsdtRate] = useState<number | null>(null);
+  const [exchangeOnline, setExchangeOnline] = useState<boolean | null>(null);
 
   useEffect(() => {
     const fetchCbPrices = async () => {
       try {
         const res = await fetch("https://functions.poehali.dev/ec611c68-8981-4ab8-8be8-6d1248f75d5b");
         const data = await res.json();
-        const buy: Record<string, number> = {};
-        const sell: Record<string, number> = {};
-        if (data.gold) { buy["gold"] = data.gold.buy; sell["gold"] = data.gold.sell; }
-        if (data.silver) { buy["silver"] = data.silver.buy; sell["silver"] = data.silver.sell; }
-        setCbBuy(buy);
-        setCbSell(sell);
+        const hasLiveData = !!(data.gold?.buy || data.silver?.buy || data.usd);
+        setExchangeOnline(hasLiveData);
+        if (data.gold?.buy) {
+          setCbBuy(prev => ({ ...prev, gold: data.gold.buy }));
+          setCbSell(prev => ({ ...prev, gold: data.gold.sell }));
+        }
+        if (data.silver?.buy) {
+          setCbBuy(prev => ({ ...prev, silver: data.silver.buy }));
+          setCbSell(prev => ({ ...prev, silver: data.silver.sell }));
+        }
         if (data.gold?.date) setCbDate(data.gold.date);
         if (data.usd) {
           setUsdRate(data.usd);
-          setUsdHistory(prev => {
-            const next = [...prev, data.usd].slice(-20);
-            return next;
-          });
+          setUsdHistory(prev => [...prev, data.usd].slice(-20));
         }
         if (data.usd_open) setUsdOpen(data.usd_open);
         if (data.usdt) setUsdtRate(data.usdt);
-      } catch (e) { console.error(e); }
+      } catch (e) { console.error(e); setExchangeOnline(false); }
     };
     fetchCbPrices();
     const interval = setInterval(fetchCbPrices, 60000);
@@ -427,11 +429,21 @@ const Index = () => {
                   <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-2">Live</p>
                   <h2 className="font-display text-2xl md:text-4xl text-[#1A1410]">Котировки в реальном времени</h2>
                 </div>
-                <div className="hidden md:flex items-center gap-2 text-[#9e9080]">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="font-body text-xs tracking-widest">Обновляется каждую минуту</span>
+                <div className="flex items-center gap-2 text-[#9e9080]">
+                  <div className={`w-2 h-2 rounded-full ${exchangeOnline === null ? "bg-gray-400" : exchangeOnline ? "bg-green-500 animate-pulse" : "bg-amber-400"}`} />
+                  <span className="font-body text-xs tracking-widest hidden md:inline">
+                    {exchangeOnline === null ? "Загрузка..." : exchangeOnline ? "Обновляется каждую минуту" : "Биржа закрыта"}
+                  </span>
                 </div>
               </div>
+              {exchangeOnline === false && (
+                <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 px-4 py-3 mb-6 text-amber-800">
+                  <Icon name="Clock" size={16} className="mt-0.5 flex-shrink-0 text-amber-500" />
+                  <p className="font-body text-xs leading-relaxed">
+                    Московская биржа сейчас закрыта. Отображаются последние актуальные котировки — они могут не отражать текущий рынок. Торги проходят в будние дни с 10:00 до 23:50.
+                  </p>
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {METALS.map((m, i) => {
                   const up = m.change >= 0;
