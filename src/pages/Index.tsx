@@ -207,7 +207,14 @@ const Index = () => {
         if (data.gold?.date) setCbDate(data.gold.date);
         if (data.usd) {
           setUsdRate(data.usd);
-          setUsdHistory(prev => [...prev, data.usd].slice(-20));
+        }
+        if (data.usd_history && data.usd_history.length > 1) {
+          setUsdHistory(data.usd_history);
+        } else if (data.usd) {
+          setUsdHistory(prev => {
+            const updated = [...prev, data.usd].slice(-20);
+            return updated;
+          });
         }
         if (data.usd_open) setUsdOpen(data.usd_open);
         if (data.usdt) setUsdtRate(data.usdt);

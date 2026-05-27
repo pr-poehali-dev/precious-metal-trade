@@ -76,6 +76,12 @@ def handler(event: dict, context) -> dict:
     s = resolve('SLVRUB_TOM', cur)
     u = resolve('USD000UTSTOM', cur)
 
+    if u['price'] is not None and not u.get('from_cache'):
+        cur.execute("INSERT INTO usd_price_history (price, recorded_at) VALUES (%s, NOW())", (u['price'],))
+
+    cur.execute("SELECT price FROM usd_price_history ORDER BY recorded_at DESC LIMIT 20")
+    usd_history = [float(r[0]) for r in reversed(cur.fetchall())]
+
     conn.commit()
     cur.close()
     conn.close()
@@ -100,6 +106,7 @@ def handler(event: dict, context) -> dict:
         'silver': silver,
         'usd': usd_rate,
         'usd_open': usd_open,
+        'usd_history': usd_history,
         'usdt': usdt_rate,
         'source': 'MOEX + Binance',
     }
