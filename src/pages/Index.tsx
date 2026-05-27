@@ -51,17 +51,17 @@ function MiniChart({ points, up }: { points: number[]; up: boolean }) {
   );
 }
 
-function LargeChart({ metal }: { metal: typeof METALS[0] }) {
+function LargeChart({ metal, history }: { metal: typeof METALS[0]; history?: number[] }) {
   const w = 600, h = 120;
-  const points = metal.chartPoints;
+  const points = (history && history.length > 1) ? history : metal.chartPoints;
   const min = Math.min(...points) - 2;
   const max = Math.max(...points) + 2;
-  const range = max - min;
+  const range = max - min || 1;
   const xs = points.map((_, i) => (i / (points.length - 1)) * w);
   const ys = points.map((p) => h - ((p - min) / range) * (h - 8) - 4);
   const d = xs.map((x, i) => `${i === 0 ? "M" : "L"}${x},${ys[i]}`).join(" ");
   const fill = `${d} L${w},${h} L0,${h} Z`;
-  const up = metal.change >= 0;
+  const up = points[points.length - 1] >= points[0];
   return (
     <svg viewBox={`0 0 ${w} ${h}`} fill="none" preserveAspectRatio="none" className="w-full h-28">
       <defs>
@@ -188,6 +188,8 @@ const Index = () => {
   const [usdOpen, setUsdOpen] = useState<number | null>(null);
   const [usdtRate, setUsdtRate] = useState<number | null>(null);
   const [exchangeOnline, setExchangeOnline] = useState<boolean | null>(null);
+  const [goldHistory, setGoldHistory] = useState<number[]>([]);
+  const [silverHistory, setSilverHistory] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchCbPrices = async () => {
@@ -218,6 +220,8 @@ const Index = () => {
         }
         if (data.usd_open) setUsdOpen(data.usd_open);
         if (data.usdt) setUsdtRate(data.usdt);
+        if (data.gold_history && data.gold_history.length > 1) setGoldHistory(data.gold_history);
+        if (data.silver_history && data.silver_history.length > 1) setSilverHistory(data.silver_history);
       } catch (e) { console.error(e); setExchangeOnline(false); }
     };
     fetchCbPrices();
@@ -457,7 +461,11 @@ const Index = () => {
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {METALS.map((m, i) => {
-                  const up = m.change >= 0;
+                  const history = m.id === 'gold' ? goldHistory : silverHistory;
+                  const chartPts = history.length > 1 ? history : m.chartPoints;
+                  const lastPrice = getPrice(m.id, "buy");
+                  const firstPrice = chartPts[0] ?? lastPrice;
+                  const up = lastPrice >= firstPrice;
                   return (
                     <div key={m.id} className="bg-white border border-[#ede8df] p-6 hover:shadow-lg transition-all duration-300 cursor-pointer">
                       <div className="flex items-start justify-between mb-4">
@@ -465,7 +473,7 @@ const Index = () => {
                           <p className="font-body text-xs text-[#9e9080] tracking-widest uppercase mb-1">{m.symbol}</p>
                           <h3 className="font-display text-2xl text-[#1A1410]">{m.name}</h3>
                         </div>
-                        <MiniChart points={m.chartPoints} up={up} />
+                        <MiniChart points={chartPts} up={up} />
                       </div>
                       <div className="flex items-end justify-between">
                         <div>
@@ -564,7 +572,7 @@ const Index = () => {
                   {selectedMetal.change >= 0 ? "+" : ""}{selectedMetal.change}% за 30 дней
                 </span>
               </div>
-              <LargeChart metal={selectedMetal} key={selectedMetal.id} />
+              <LargeChart metal={selectedMetal} history={selectedMetal.id === 'gold' ? goldHistory : silverHistory} key={selectedMetal.id} />
               <div className="flex justify-between mt-2">
                 {["30 дн. назад", "20 дн.", "10 дн.", "Сегодня"].map(l => (
                   <span key={l} className="font-body text-xs text-[#c0b8ae]">{l}</span>

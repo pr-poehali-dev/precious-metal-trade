@@ -82,6 +82,17 @@ def handler(event: dict, context) -> dict:
     cur.execute("SELECT price FROM usd_price_history ORDER BY recorded_at DESC LIMIT 20")
     usd_history = [float(r[0]) for r in reversed(cur.fetchall())]
 
+    if g['price'] is not None and not g.get('from_cache'):
+        cur.execute("INSERT INTO metal_price_history (symbol, price, recorded_at) VALUES ('gold', %s, NOW())", (g['price'],))
+    if s['price'] is not None and not s.get('from_cache'):
+        cur.execute("INSERT INTO metal_price_history (symbol, price, recorded_at) VALUES ('silver', %s, NOW())", (s['price'],))
+
+    cur.execute("SELECT price FROM metal_price_history WHERE symbol = 'gold' ORDER BY recorded_at DESC LIMIT 20")
+    gold_history = [float(r[0]) for r in reversed(cur.fetchall())]
+
+    cur.execute("SELECT price FROM metal_price_history WHERE symbol = 'silver' ORDER BY recorded_at DESC LIMIT 20")
+    silver_history = [float(r[0]) for r in reversed(cur.fetchall())]
+
     conn.commit()
     cur.close()
     conn.close()
@@ -107,6 +118,8 @@ def handler(event: dict, context) -> dict:
         'usd': usd_rate,
         'usd_open': usd_open,
         'usd_history': usd_history,
+        'gold_history': gold_history,
+        'silver_history': silver_history,
         'usdt': usdt_rate,
         'source': 'MOEX + Binance',
     }
