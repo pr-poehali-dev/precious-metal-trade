@@ -1,13 +1,11 @@
 {
   "tests": [
     {
-      "name": "Получение котировок ЦБ РФ",
+      "name": "Получение котировок металлов",
       "method": "GET",
       "path": "/",
       "expectedStatus": 200,
-      "expectedBody": {
-        "gold": {}
-      },
+      "expectedBody": {"source": "MOEX + Binance"},
       "bodyMatcher": "partial"
     }
   ]

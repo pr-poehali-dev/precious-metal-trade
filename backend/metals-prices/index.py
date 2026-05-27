@@ -1,5 +1,11 @@
 import urllib.request
 import json
+import os
+import psycopg2
+
+
+def get_conn():
+    return psycopg2.connect(os.environ['DATABASE_URL'])
 
 
 def fetch_moex(symbol: str) -> dict:
@@ -11,13 +17,45 @@ def fetch_moex(symbol: str) -> dict:
     if rows and rows[0]:
         last = rows[0][0]
         open_price = rows[0][1]
-        rate = float(last) if last else float(open_price) if open_price else None
-        return {'buy': rate, 'sell': rate, 'open': float(open_price) if open_price else rate}
-    return {'buy': None, 'sell': None, 'open': None}
+        rate = float(last) if last else None
+        open_val = float(open_price) if open_price else None
+        return {'price': rate, 'open': open_val}
+    return {'price': None, 'open': None}
+
+
+def get_cached(cur, symbol: str):
+    cur.execute("SELECT price, open_price FROM metals_prices_cache WHERE symbol = %s", (symbol,))
+    row = cur.fetchone()
+    if row:
+        return {'price': float(row[0]) if row[0] else None, 'open': float(row[1]) if row[1] else None}
+    return {'price': None, 'open': None}
+
+
+def save_cache(cur, symbol: str, price, open_price):
+    cur.execute("""
+        INSERT INTO metals_prices_cache (symbol, price, open_price, updated_at)
+        VALUES (%s, %s, %s, NOW())
+        ON CONFLICT (symbol) DO UPDATE SET price = %s, open_price = %s, updated_at = NOW()
+    """, (symbol, price, open_price, price, open_price))
+
+
+def resolve(symbol: str, cur) -> dict:
+    try:
+        live = fetch_moex(symbol)
+    except Exception:
+        live = {'price': None, 'open': None}
+
+    if live['price'] is not None:
+        save_cache(cur, symbol, live['price'], live['open'])
+        return live
+    else:
+        cached = get_cached(cur, symbol)
+        cached['from_cache'] = True
+        return cached
 
 
 def handler(event: dict, context) -> dict:
-    """Получает котировки золота, серебра и доллара с Московской биржи (MOEX)"""
+    """Получает котировки золота, серебра и доллара с MOEX. При закрытой бирже возвращает последние сохранённые значения."""
 
     if event.get('httpMethod') == 'OPTIONS':
         return {
@@ -31,31 +69,21 @@ def handler(event: dict, context) -> dict:
             'body': ''
         }
 
-    gold = None
-    silver = None
-    usd_rate = None
-    usd_open = None
+    conn = get_conn()
+    cur = conn.cursor()
 
-    try:
-        g = fetch_moex('GLDRUB_TOM')
-        if g['buy']:
-            gold = {'buy': g['buy'], 'sell': g['sell']}
-    except Exception:
-        pass
+    g = resolve('GLDRUB_TOM', cur)
+    s = resolve('SLVRUB_TOM', cur)
+    u = resolve('USD000UTSTOM', cur)
 
-    try:
-        s = fetch_moex('SLVRUB_TOM')
-        if s['buy']:
-            silver = {'buy': s['buy'], 'sell': s['sell']}
-    except Exception:
-        pass
+    conn.commit()
+    cur.close()
+    conn.close()
 
-    try:
-        u = fetch_moex('USD000UTSTOM')
-        usd_rate = u['buy']
-        usd_open = u['open']
-    except Exception:
-        pass
+    gold = {'buy': g['price'], 'sell': g['price']} if g['price'] else None
+    silver = {'buy': s['price'], 'sell': s['price']} if s['price'] else None
+    usd_rate = u['price']
+    usd_open = u['open']
 
     usdt_rate = None
     try:
