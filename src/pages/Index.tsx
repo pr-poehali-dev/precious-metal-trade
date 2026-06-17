@@ -225,7 +225,7 @@ const Index = () => {
       } catch (e) { console.error(e); setExchangeOnline(false); }
     };
     fetchCbPrices();
-    const interval = setInterval(fetchCbPrices, 60000);
+    const interval = setInterval(fetchCbPrices, 300000);
     return () => clearInterval(interval);
   }, []);
 
