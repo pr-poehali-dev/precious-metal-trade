@@ -97,10 +97,11 @@ def handler(event: dict, context) -> dict:
     cur.close()
     conn.close()
 
-    gold = {'buy': g['price'], 'sell': g['price']} if g['price'] else None
-    silver = {'buy': s['price'], 'sell': s['price']} if s['price'] else None
+    gold = {'buy': g['price'], 'sell': g['price'], 'from_cache': g.get('from_cache', False)} if g['price'] else None
+    silver = {'buy': s['price'], 'sell': s['price'], 'from_cache': s.get('from_cache', False)} if s['price'] else None
     usd_rate = u['price']
     usd_open = u['open']
+    exchange_online = not (g.get('from_cache') and s.get('from_cache') and u.get('from_cache'))
 
     usdt_rate = None
     try:
@@ -122,6 +123,7 @@ def handler(event: dict, context) -> dict:
         'silver_history': silver_history,
         'usdt': usdt_rate,
         'source': 'MOEX + Binance',
+        'exchange_online': exchange_online,
     }
 
     return {

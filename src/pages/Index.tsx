@@ -196,8 +196,7 @@ const Index = () => {
       try {
         const res = await fetch("https://functions.poehali.dev/ec611c68-8981-4ab8-8be8-6d1248f75d5b");
         const data = await res.json();
-        const hasLiveData = !!(data.gold?.buy || data.silver?.buy || data.usd);
-        setExchangeOnline(hasLiveData);
+        setExchangeOnline(data.exchange_online ?? !!(data.gold?.buy || data.silver?.buy || data.usd));
         if (data.gold?.buy) {
           setCbBuy(prev => ({ ...prev, gold: data.gold.buy }));
           setCbSell(prev => ({ ...prev, gold: data.gold.sell }));
