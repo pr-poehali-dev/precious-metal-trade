@@ -904,7 +904,7 @@ const Index = () => {
               <h2 className="font-display text-3xl text-[#1A1410] mb-8">Реквизиты</h2>
               <div className="flex flex-col gap-6">
                 {[
-                  { icon: "MapPin", title: "Адрес", value: "Комсомольский проспект, 7с2", href: "https://maps.google.com/?q=Комсомольский+проспект,+7с2,+Москва" },
+                  { icon: "MapPin", title: "Адрес", value: "Комсомольский проспект, 7с2", href: "https://yandex.ru/maps/?text=Комсомольский+проспект,+7с2,+Москва" },
                   { icon: "Phone", title: "Телефон", value: "+7 (903) 711-82-28", href: "tel:+79037118228" },
                   { icon: "Mail", title: "Email", value: "mr.zolotov.msk@yandex.ru", href: "mailto:mr.zolotov.msk@yandex.ru" },
                   { icon: "Clock", title: "Часы работы", value: "Пн–Пт: 9:00–18:00", href: null },
