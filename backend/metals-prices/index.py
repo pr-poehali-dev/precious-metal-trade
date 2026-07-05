@@ -2,6 +2,17 @@ import urllib.request
 import json
 import os
 import psycopg2
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+
+def is_trading_hours() -> bool:
+    now = datetime.now(ZoneInfo('Europe/Moscow'))
+    if now.weekday() >= 5:
+        return False
+    start = now.replace(hour=10, minute=0, second=0, microsecond=0)
+    end = now.replace(hour=23, minute=50, second=0, microsecond=0)
+    return start <= now <= end
 
 
 def get_conn():
@@ -101,7 +112,7 @@ def handler(event: dict, context) -> dict:
     silver = {'buy': s['price'], 'sell': s['price'], 'from_cache': s.get('from_cache', False)} if s['price'] else None
     usd_rate = u['price']
     usd_open = u['open']
-    exchange_online = not (g.get('from_cache') and s.get('from_cache') and u.get('from_cache'))
+    exchange_online = is_trading_hours()
 
     usdt_rate = None
     try:
