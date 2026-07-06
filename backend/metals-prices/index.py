@@ -50,6 +50,18 @@ def save_cache(cur, symbol: str, price, open_price):
     """, (symbol, price, open_price, price, open_price))
 
 
+def should_record(cur, table: str, symbol_filter: str = None) -> bool:
+    if symbol_filter:
+        cur.execute(f"SELECT recorded_at FROM {table} WHERE symbol = %s ORDER BY recorded_at DESC LIMIT 1", (symbol_filter,))
+    else:
+        cur.execute(f"SELECT recorded_at FROM {table} ORDER BY recorded_at DESC LIMIT 1")
+    row = cur.fetchone()
+    if row is None:
+        return True
+    cur.execute("SELECT NOW() - %s > INTERVAL '30 minutes'", (row[0],))
+    return cur.fetchone()[0]
+
+
 def resolve(symbol: str, cur) -> dict:
     try:
         live = fetch_moex(symbol)
@@ -87,15 +99,15 @@ def handler(event: dict, context) -> dict:
     s = resolve('SLVRUB_TOM', cur)
     u = resolve('USD000UTSTOM', cur)
 
-    if u['price'] is not None and not u.get('from_cache'):
+    if u['price'] is not None and not u.get('from_cache') and should_record(cur, 'usd_price_history'):
         cur.execute("INSERT INTO usd_price_history (price, recorded_at) VALUES (%s, NOW())", (u['price'],))
 
     cur.execute("SELECT price FROM usd_price_history ORDER BY recorded_at DESC LIMIT 20")
     usd_history = [float(r[0]) for r in reversed(cur.fetchall())]
 
-    if g['price'] is not None and not g.get('from_cache'):
+    if g['price'] is not None and not g.get('from_cache') and should_record(cur, 'metal_price_history', 'gold'):
         cur.execute("INSERT INTO metal_price_history (symbol, price, recorded_at) VALUES ('gold', %s, NOW())", (g['price'],))
-    if s['price'] is not None and not s.get('from_cache'):
+    if s['price'] is not None and not s.get('from_cache') and should_record(cur, 'metal_price_history', 'silver'):
         cur.execute("INSERT INTO metal_price_history (symbol, price, recorded_at) VALUES ('silver', %s, NOW())", (s['price'],))
 
     cur.execute("SELECT price FROM metal_price_history WHERE symbol = 'gold' ORDER BY recorded_at DESC LIMIT 20")
