@@ -1,155 +1,11 @@
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
-
-const SELL_ITEMS = [
-  { id: "gold", name: "Золото", symbol: "XAU", purity: "999.9", defaultPrice: 10314, img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/d4adee9f-63bd-4111-9624-ed7b47e7154f.jpg" },
-  { id: "silver", name: "Серебро", symbol: "XAG", purity: "999", defaultPrice: 171, img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/9e2715fb-de1f-43b0-a923-a1f70c44791f.jpg" },
-  { id: "gold585", name: "Лом Золото", symbol: "AU", purity: "585", defaultPrice: 6100, img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/363a4f64-874a-4469-a531-2a489685e54d.jpg" },
-];
-
-const METALS = [
-  {
-    id: "gold",
-    name: "Золото",
-    symbol: "XAU",
-    price: 7842.50,
-    change: +1.24,
-    unit: "за грамм",
-    img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/9f8fc474-95d4-4d76-9e4b-ff5bed8c09e8.jpg",
-    desc: "Инвестиционное золото высшей пробы 999.9. Мерные слитки и монеты.",
-    purity: "999.9",
-    minWeight: "1 г",
-    chartPoints: [120, 118, 125, 122, 130, 128, 135, 133, 140, 138, 145],
-  },
-  {
-    id: "silver",
-    name: "Серебро",
-    symbol: "XAG",
-    price: 92.30,
-    change: -0.47,
-    unit: "за грамм",
-    img: "https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/e29aa351-29f9-429b-bf8d-575ff5280a0e.jpg",
-    desc: "Серебро 999 пробы в слитках и монетах. Промышленное и инвестиционное.",
-    purity: "999",
-    minWeight: "10 г",
-    chartPoints: [100, 98, 102, 99, 97, 95, 96, 94, 93, 92, 92],
-  },
-];
-
-function MiniChart({ points, up }: { points: number[]; up: boolean }) {
-  const w = 80, h = 32;
-  const min = Math.min(...points);
-  const max = Math.max(...points);
-  const range = max - min || 1;
-  const xs = points.map((_, i) => (i / (points.length - 1)) * w);
-  const ys = points.map((p) => h - ((p - min) / range) * (h - 4) - 2);
-  const d = xs.map((x, i) => `${i === 0 ? "M" : "L"}${x},${ys[i]}`).join(" ");
-  return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none">
-      <path d={d} stroke={up ? "#2d7a4f" : "#c0392b"} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function LargeChart({ metal, history }: { metal: typeof METALS[0]; history?: number[] }) {
-  const w = 600, h = 120;
-  const points = (history && history.length > 1) ? history : metal.chartPoints;
-  const min = Math.min(...points) - 2;
-  const max = Math.max(...points) + 2;
-  const range = max - min || 1;
-  const xs = points.map((_, i) => (i / (points.length - 1)) * w);
-  const ys = points.map((p) => h - ((p - min) / range) * (h - 8) - 4);
-  const d = xs.map((x, i) => `${i === 0 ? "M" : "L"}${x},${ys[i]}`).join(" ");
-  const fill = `${d} L${w},${h} L0,${h} Z`;
-  const up = points[points.length - 1] >= points[0];
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} fill="none" preserveAspectRatio="none" className="w-full h-28">
-      <defs>
-        <linearGradient id={`grad-${metal.id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={up ? "#2d7a4f" : "#c0392b"} stopOpacity="0.12" />
-          <stop offset="100%" stopColor={up ? "#2d7a4f" : "#c0392b"} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path d={fill} fill={`url(#grad-${metal.id})`} />
-      <path d={d} stroke={up ? "#2d7a4f" : "#c0392b"} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+import MiniChart from "@/components/metals/MiniChart";
+import LargeChart from "@/components/metals/LargeChart";
+import ContactForm from "@/components/metals/ContactForm";
+import { METALS, SELL_ITEMS } from "@/data/metals";
 
 type Section = "home" | "catalog" | "sell" | "about" | "contacts";
-
-function ContactForm() {
-  const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
-  const [metal, setMetal] = useState("");
-  const [comment, setComment] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
-
-  const submit = async () => {
-    if (!name.trim() || !contact.trim()) return;
-    setStatus("loading");
-    try {
-      const res = await fetch("https://functions.poehali.dev/9009c010-2fa3-4c6b-8331-52eea5618f2d", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, contact, metal, comment }),
-      });
-      if (res.ok) {
-        setStatus("ok");
-        setName(""); setContact(""); setMetal(""); setComment("");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-4">
-      <input
-        placeholder="Ваше имя"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        className="border border-[#ede8df] bg-white px-4 py-3 font-body text-sm text-[#1A1410] placeholder:text-[#c0b8ae] focus:outline-none focus:border-[#A07830] transition-colors"
-      />
-      <input
-        placeholder="Телефон или email"
-        value={contact}
-        onChange={e => setContact(e.target.value)}
-        className="border border-[#ede8df] bg-white px-4 py-3 font-body text-sm text-[#1A1410] placeholder:text-[#c0b8ae] focus:outline-none focus:border-[#A07830] transition-colors"
-      />
-      <select
-        value={metal}
-        onChange={e => setMetal(e.target.value)}
-        className="border border-[#ede8df] bg-white px-4 py-3 font-body text-sm text-[#6b5e52] focus:outline-none focus:border-[#A07830] transition-colors"
-      >
-        <option value="">Интересующий металл</option>
-        {METALS.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
-      </select>
-      <textarea
-        placeholder="Комментарий или вопрос"
-        rows={4}
-        value={comment}
-        onChange={e => setComment(e.target.value)}
-        className="border border-[#ede8df] bg-white px-4 py-3 font-body text-sm text-[#1A1410] placeholder:text-[#c0b8ae] focus:outline-none focus:border-[#A07830] transition-colors resize-none"
-      />
-      {status === "ok" && (
-        <p className="font-body text-sm text-green-600">Заявка отправлена! Мы свяжемся с вами.</p>
-      )}
-      {status === "error" && (
-        <p className="font-body text-sm text-red-500">Ошибка отправки. Попробуйте ещё раз или свяжитесь напрямую.</p>
-      )}
-      <button
-        onClick={submit}
-        disabled={status === "loading"}
-        className="bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors disabled:opacity-60"
-      >
-        {status === "loading" ? "Отправка..." : "Отправить заявку"}
-      </button>
-    </div>
-  );
-}
 
 const Index = () => {
   const [active, setActive] = useState<Section>("home");
@@ -373,7 +229,12 @@ const Index = () => {
             ))}
           </nav>
 
-          <button className="md:hidden text-[#1A1410] p-2 -mr-2" onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className="md:hidden text-[#1A1410] p-2 -mr-2"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+            aria-expanded={menuOpen}
+          >
             <Icon name={menuOpen ? "X" : "Menu"} size={24} />
           </button>
         </div>
@@ -609,7 +470,7 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
           <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Наши товары</p>
-            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Каталог металлов</h1>
+            <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Каталог металлов</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-5 md:gap-8">
             {METALS.map((m, i) => (
@@ -651,7 +512,7 @@ const Index = () => {
                                 <button onClick={() => resetManual(m.id, type)} className="font-body text-[10px] text-[#9e9080] hover:text-red-500 transition-colors">↺</button>
                               )}
                               {!isEditing && (
-                                <button onClick={() => startEdit(key, price)} className="text-[#A07830] hover:text-[#8a6428] transition-colors">
+                                <button onClick={() => startEdit(key, price)} aria-label="Изменить цену" className="text-[#A07830] hover:text-[#8a6428] transition-colors p-1 -m-1">
                                   <Icon name="Pencil" size={11} />
                                 </button>
                               )}
@@ -732,7 +593,7 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
           <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">О компании</p>
-            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Экспертиза в мире металлов</h1>
+            <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Экспертиза в мире металлов</h2>
           </div>
           <section className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
             <div>
@@ -787,7 +648,7 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
           <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Выкуп металлов</p>
-            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Продать металл</h1>
+            <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Продать металл</h2>
           </div>
 
           {/* Карточки с ценами выкупа */}
@@ -894,7 +755,7 @@ const Index = () => {
         <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
           <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
             <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Связь с нами</p>
-            <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Контакты</h1>
+            <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Контакты</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 md:gap-16">
             <div>
