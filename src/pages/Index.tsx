@@ -745,7 +745,7 @@ const Index = () => {
               <div className="grid grid-cols-3 gap-3 md:gap-6 mb-10">
                 {[
                   { num: "15+", label: "Лет на рынке" },
-                  { num: "₽ 3 млрд", label: "Объём сделок" },
+                  { num: "₽ 10 млрд+", label: "Объём сделок" },
                   { num: "2", label: "Металла" },
                 ].map(s => (
                   <div key={s.label} className="border-l-2 border-[#A07830] pl-4">
