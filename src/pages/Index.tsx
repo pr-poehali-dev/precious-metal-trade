@@ -613,7 +613,7 @@ const Index = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-5 md:gap-8">
             {METALS.map((m, i) => (
-              <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden group hover:shadow-xl transition-shadow duration-300">
+              <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden group hover:shadow-xl transition-shadow duration-300 flex flex-col">
                 <div className="relative overflow-hidden aspect-video">
                   <img
                     src={m.img}
@@ -624,7 +624,7 @@ const Index = () => {
                     <span className="font-body text-xs tracking-widest text-[#A07830]">{m.symbol}</span>
                   </div>
                 </div>
-                <div className="p-4 md:p-6">
+                <div className="p-4 md:p-6 flex flex-col flex-1">
                   <div className="flex items-start justify-between mb-3">
                     <h2 className="font-display text-2xl md:text-3xl text-[#1A1410]">{m.name}</h2>
                     <span className={`font-body text-sm ${m.change >= 0 ? "text-green-600" : "text-red-500"}`}>
@@ -694,6 +694,7 @@ const Index = () => {
                       </div>
                     ))}
                   </div>
+                  <div className="flex-1" />
                   <button
                     onClick={() => setActive("contacts")}
                     className="w-full bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
