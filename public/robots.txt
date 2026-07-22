@@ -19,4 +19,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://zolotov.poehali.dev/sitemap.xml
+Sitemap: https://mrzolotov.ru/sitemap.xml
