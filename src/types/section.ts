@@ -1,6 +1,4 @@
-export type Section = "home" | "catalog" | "sell" | "about" | "contacts";
-
 export interface NavItem {
-  key: Section;
+  path: string;
   label: string;
 }

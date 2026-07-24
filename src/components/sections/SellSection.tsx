@@ -1,9 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { SELL_ITEMS } from "@/data/metals";
-import { Section } from "@/types/section";
 
 interface SellSectionProps {
-  setActive: (s: Section) => void;
   getPrice: (id: string, type: "buy" | "sell") => number;
   manualSell: Record<string, number>;
   editingKey: string | null;
@@ -16,7 +15,6 @@ interface SellSectionProps {
 }
 
 const SellSection = ({
-  setActive,
   getPrice,
   manualSell,
   editingKey,
@@ -27,6 +25,7 @@ const SellSection = ({
   setEditingKey,
   resetManual,
 }: SellSectionProps) => {
+  const navigate = useNavigate();
   return (
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
       <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
@@ -102,7 +101,7 @@ const SellSection = ({
             })}
 
             <button
-              onClick={() => setActive("contacts")}
+              onClick={() => navigate("/contacts")}
               className="w-full bg-[#A07830] text-white font-body text-sm py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
             >
               Оставить заявку на продажу

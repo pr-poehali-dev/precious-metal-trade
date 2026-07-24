@@ -1,11 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import MiniChart from "@/components/metals/MiniChart";
 import LargeChart from "@/components/metals/LargeChart";
 import { METALS } from "@/data/metals";
-import { Section } from "@/types/section";
 
 interface HomeSectionProps {
-  setActive: (s: Section) => void;
   getPrice: (id: string, type: "buy" | "sell") => number;
   exchangeOnline: boolean | null;
   goldHistory: number[];
@@ -19,7 +18,6 @@ interface HomeSectionProps {
 }
 
 const HomeSection = ({
-  setActive,
   getPrice,
   exchangeOnline,
   goldHistory,
@@ -31,6 +29,7 @@ const HomeSection = ({
   selectedMetal,
   setSelectedMetal,
 }: HomeSectionProps) => {
+  const navigate = useNavigate();
   return (
     <main>
       <section className="max-w-6xl mx-auto px-6 pt-10 pb-10 md:pt-20 md:pb-16 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -46,13 +45,13 @@ const HomeSection = ({
           </p>
           <div className="flex gap-4">
             <button
-              onClick={() => setActive("catalog")}
+              onClick={() => navigate("/catalog")}
               className="flex-1 md:flex-none bg-[#A07830] text-white font-body text-sm px-8 py-3 tracking-wider hover:bg-[#8a6428] transition-colors"
             >
               Купить
             </button>
             <button
-              onClick={() => setActive("sell")}
+              onClick={() => navigate("/sell")}
               className="flex-1 md:flex-none border border-[#A07830] text-[#A07830] font-body text-sm px-8 py-3 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors"
             >
               Продать
