@@ -34,6 +34,22 @@ const CatalogSection = ({
         <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Наши товары</p>
         <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Каталог металлов</h2>
       </div>
+
+      <div className="flex items-center gap-4 bg-[#1A1410] px-5 py-4 md:px-8 md:py-5 mb-8 md:mb-12">
+        <div className="w-10 h-10 md:w-12 md:h-12 border border-[#A07830] flex items-center justify-center flex-shrink-0">
+          <Icon name="Award" size={20} className="text-[#C8A050]" />
+        </div>
+        <p className="font-body text-sm md:text-base text-white leading-relaxed">
+          При покупке от <span className="text-[#C8A050] font-medium">500 гр</span> — специальные условия и цены
+        </p>
+        <button
+          onClick={() => navigate("/contacts")}
+          className="hidden md:block ml-auto flex-shrink-0 border border-[#A07830] text-[#A07830] font-body text-xs px-5 py-2.5 tracking-wider hover:bg-[#A07830] hover:text-white transition-colors"
+        >
+          Узнать условия
+        </button>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-5 md:gap-8">
         {METALS.map((m) => (
           <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden group hover:shadow-xl transition-shadow duration-300 flex flex-col">
