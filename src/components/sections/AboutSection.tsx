@@ -5,7 +5,7 @@ const AboutSection = () => {
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
       <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
         <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">О компании</p>
-        <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Экспертиза в мире металлов</h2>
+        <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Экспертиза в мире металлов</h1>
       </div>
       <section className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
         <div>
@@ -38,7 +38,7 @@ const AboutSection = () => {
                 <div className="w-10 h-10 border border-[#ede8df] flex items-center justify-center mb-4">
                   <Icon name={p.icon} fallback="Star" size={20} className="text-[#A07830]" />
                 </div>
-                <p className="font-display text-xl text-[#1A1410] mb-1">{p.title}</p>
+                <h2 className="font-display text-xl text-[#1A1410] mb-1">{p.title}</h2>
                 <p className="font-body text-sm text-[#9e9080]">{p.desc}</p>
               </div>
             ))}
@@ -47,7 +47,8 @@ const AboutSection = () => {
         <div className="relative">
           <img
             src="https://cdn.poehali.dev/projects/78efbc03-a523-46f9-bb59-48a63171a417/files/9f8fc474-95d4-4d76-9e4b-ff5bed8c09e8.jpg"
-            alt="О компании"
+            alt="Золотов — эксперты по драгоценным металлам в офисе компании"
+            loading="lazy"
             className="w-full aspect-square object-cover"
           />
         </div>

@@ -30,7 +30,7 @@ const SellSection = ({
     <main className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20">
       <div className="border-b border-[#ede8df] mb-8 md:mb-12 pb-6 md:pb-8">
         <p className="font-body text-xs tracking-[0.3em] text-[#A07830] uppercase mb-3">Выкуп металлов</p>
-        <h2 className="font-display text-3xl md:text-5xl text-[#1A1410]">Продать металл</h2>
+        <h1 className="font-display text-3xl md:text-5xl text-[#1A1410]">Продать металл</h1>
       </div>
 
       <div className="flex items-center gap-4 bg-[#1A1410] px-5 py-4 md:px-8 md:py-5 mb-8 md:mb-12">
@@ -53,7 +53,7 @@ const SellSection = ({
         {SELL_ITEMS.map(m => (
           <div key={m.id} className="bg-white border border-[#ede8df] overflow-hidden">
             <div className="relative aspect-video overflow-hidden">
-              <img src={m.img} alt={m.name} className="w-full h-full object-cover" />
+              <img src={m.img} alt={m.name} loading="lazy" className="w-full h-full object-cover" />
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1">
                 <span className="font-body text-xs tracking-widest text-[#A07830]">{m.symbol} · {m.purity}</span>
               </div>
