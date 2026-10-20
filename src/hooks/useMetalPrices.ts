@@ -75,7 +75,7 @@ export function useMetalPrices() {
     if (manualSell[id] !== undefined) return manualSell[id];
     if (id === "gold585") {
       const goldPrice = cbBuy["gold"] ?? METALS.find(m => m.id === "gold")?.price ?? 0;
-      return Math.round(goldPrice * (585 / 999.9) * 0.94 * 100) / 100;
+      return Math.round(goldPrice * (585 / 999.9) * 0.96 * 100) / 100;
     }
     const cbPrice = cbBuy[id] ?? fallback;
     const discount = 0.96;
