@@ -16,6 +16,7 @@ const Sell = () => {
     <SellSection
       getPrice={ctx.getPrice}
       manualSell={ctx.manualSell}
+      margins={ctx.margins}
       editingKey={ctx.editingKey}
       editValue={ctx.editValue}
       setEditValue={ctx.setEditValue}

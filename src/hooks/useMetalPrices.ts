@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { METALS, SELL_ITEMS } from "@/data/metals";
 
 const PRICES_URL = "https://functions.poehali.dev/4a210323-b28f-46af-bd5e-adebaaeea54a";
+const DEFAULT_MARGIN = 4;
 const METALS_PRICES_URL = "https://functions.poehali.dev/ec611c68-8981-4ab8-8be8-6d1248f75d5b";
 
 export function useMetalPrices() {
@@ -17,6 +18,13 @@ export function useMetalPrices() {
   const [exchangeOnline, setExchangeOnline] = useState<boolean | null>(null);
   const [goldHistory, setGoldHistory] = useState<number[]>([]);
   const [silverHistory, setSilverHistory] = useState<number[]>([]);
+  const [margins, setMargins] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    fetch(`${PRICES_URL}?margins=1`).then(r => r.json()).then(data => {
+      setMargins(data);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     fetch(PRICES_URL).then(r => r.json()).then(data => {
@@ -73,18 +81,19 @@ export function useMetalPrices() {
     const fallback = METALS.find(m => m.id === id)?.price ?? SELL_ITEMS.find(m => m.id === id)?.defaultPrice ?? 0;
     if (type === "buy") return manualBuy[id] ?? cbBuy[id] ?? fallback;
     if (manualSell[id] !== undefined) return manualSell[id];
+    const discount = 1 - (margins[id] ?? DEFAULT_MARGIN) / 100;
     if (id === "gold585") {
       const goldPrice = cbBuy["gold"] ?? METALS.find(m => m.id === "gold")?.price ?? 0;
-      return Math.round(goldPrice * (585 / 999.9) * 0.96 * 100) / 100;
+      return Math.round(goldPrice * (585 / 999.9) * discount * 100) / 100;
     }
     const cbPrice = cbBuy[id] ?? fallback;
-    const discount = 0.96;
     return Math.round(cbPrice * discount * 100) / 100;
   };
 
   const saveEdit = (key: string, val: number) => {
     const [id, type] = key.split("_");
-    if (type === "buy") setManualBuy(prev => ({ ...prev, [id]: val }));
+    if (type === "margin") setMargins(prev => ({ ...prev, [id]: val }));
+    else if (type === "buy") setManualBuy(prev => ({ ...prev, [id]: val }));
     else setManualSell(prev => ({ ...prev, [id]: val }));
     fetch(PRICES_URL, {
       method: "POST",
@@ -106,6 +115,7 @@ export function useMetalPrices() {
   return {
     manualBuy,
     manualSell,
+    margins,
     cbDate,
     usdRate,
     usdHistory,

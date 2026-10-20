@@ -19,6 +19,7 @@ export interface LayoutContext {
   getPrice: (id: string, type: "buy" | "sell") => number;
   manualBuy: Record<string, number>;
   manualSell: Record<string, number>;
+  margins: Record<string, number>;
   cbDate: string | null;
   usdRate: number | null;
   usdHistory: number[];
@@ -48,6 +49,7 @@ const Layout = () => {
   const {
     manualBuy,
     manualSell,
+    margins,
     cbDate,
     usdRate,
     usdHistory,
@@ -90,7 +92,8 @@ const Layout = () => {
 
   const saveEdit = (key: string) => {
     const val = parseFloat(editValue.replace(",", "."));
-    if (!isNaN(val) && val > 0) {
+    const isMargin = key.endsWith("_margin");
+    if (!isNaN(val) && (isMargin ? val >= 0 && val < 100 : val > 0)) {
       persistEdit(key, val);
     }
     setEditingKey(null);
@@ -100,6 +103,7 @@ const Layout = () => {
     getPrice,
     manualBuy,
     manualSell,
+    margins,
     cbDate,
     usdRate,
     usdHistory,

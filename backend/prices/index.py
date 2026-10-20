@@ -27,6 +27,13 @@ def handler(event: dict, context) -> dict:
     if event.get('httpMethod') == 'GET':
         conn = get_conn()
         cur = conn.cursor()
+        params = event.get('queryStringParameters') or {}
+        if params.get('margins'):
+            cur.execute("SELECT id, margin_percent FROM margin_settings")
+            margins = {row[0]: float(row[1]) for row in cur.fetchall()}
+            cur.close()
+            conn.close()
+            return {'statusCode': 200, 'headers': headers, 'body': json.dumps(margins)}
         cur.execute("SELECT id, price_buy, price_sell FROM manual_prices")
         rows = cur.fetchall()
         cur.close()
@@ -48,7 +55,12 @@ def handler(event: dict, context) -> dict:
         conn = get_conn()
         cur = conn.cursor()
 
-        if price_type == 'reset_buy':
+        if price_type == 'margin':
+            cur.execute("""
+                INSERT INTO margin_settings (id, margin_percent) VALUES (%s, %s)
+                ON CONFLICT (id) DO UPDATE SET margin_percent = %s, updated_at = NOW()
+            """, (metal_id, price, price))
+        elif price_type == 'reset_buy':
             cur.execute("""
                 INSERT INTO manual_prices (id, price_buy) VALUES (%s, NULL)
                 ON CONFLICT (id) DO UPDATE SET price_buy = NULL, updated_at = NOW()

@@ -5,6 +5,7 @@ import { SELL_ITEMS } from "@/data/metals";
 interface SellSectionProps {
   getPrice: (id: string, type: "buy" | "sell") => number;
   manualSell: Record<string, number>;
+  margins: Record<string, number>;
   editingKey: string | null;
   editValue: string;
   setEditValue: (v: string) => void;
@@ -17,6 +18,7 @@ interface SellSectionProps {
 const SellSection = ({
   getPrice,
   manualSell,
+  margins,
   editingKey,
   editValue,
   setEditValue,
@@ -116,6 +118,42 @@ const SellSection = ({
                 </div>
               );
             })}
+
+            {(() => {
+              const mKey = `${m.id}_margin`;
+              const margin = margins[m.id] ?? 4;
+              const isEditingMargin = editingKey === mKey;
+              return (
+                <div className="border border-[#ede8df] p-4 bg-[#faf9f7] mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-body text-xs text-[#9e9080] tracking-wider uppercase">Маржа, %</p>
+                    {!isEditingMargin && (
+                      <button onClick={() => startEdit(mKey, margin)} className="flex items-center gap-1 font-body text-xs text-[#A07830] hover:text-[#8a6428] transition-colors">
+                        <Icon name="Pencil" size={11} /> Изменить
+                      </button>
+                    )}
+                  </div>
+                  {isEditingMargin ? (
+                    <div className="flex items-center gap-2">
+                      <input
+                        autoFocus
+                        type="number"
+                        step="0.1"
+                        value={editValue}
+                        onChange={e => setEditValue(e.target.value)}
+                        onKeyDown={e => { if (e.key === "Enter") saveEdit(mKey); if (e.key === "Escape") setEditingKey(null); }}
+                        className="flex-1 min-w-0 border border-[#A07830] bg-white px-3 py-2 font-display text-2xl text-[#1A1410] focus:outline-none"
+                      />
+                      <span className="font-display text-xl text-[#9e9080]">%</span>
+                      <button onClick={() => saveEdit(mKey)} className="bg-[#A07830] text-white px-3 py-2 font-body text-xs tracking-wider hover:bg-[#8a6428] transition-colors">ОК</button>
+                      <button onClick={() => setEditingKey(null)} className="border border-[#ede8df] px-3 py-2 font-body text-xs text-[#9e9080]">✕</button>
+                    </div>
+                  ) : (
+                    <p className="font-display text-3xl text-[#1A1410]">{margin.toLocaleString("ru-RU")} %</p>
+                  )}
+                </div>
+              );
+            })()}
 
             <button
               onClick={() => navigate("/contacts")}
