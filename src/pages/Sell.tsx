@@ -17,6 +17,7 @@ const Sell = () => {
       getPrice={ctx.getPrice}
       manualSell={ctx.manualSell}
       margins={ctx.margins}
+      isAdmin={ctx.isAdmin}
       editingKey={ctx.editingKey}
       editValue={ctx.editValue}
       setEditValue={ctx.setEditValue}

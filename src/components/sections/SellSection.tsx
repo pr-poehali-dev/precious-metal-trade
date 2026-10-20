@@ -6,6 +6,7 @@ interface SellSectionProps {
   getPrice: (id: string, type: "buy" | "sell") => number;
   manualSell: Record<string, number>;
   margins: Record<string, number>;
+  isAdmin: boolean;
   editingKey: string | null;
   editValue: string;
   setEditValue: (v: string) => void;
@@ -19,6 +20,7 @@ const SellSection = ({
   getPrice,
   manualSell,
   margins,
+  isAdmin,
   editingKey,
   editValue,
   setEditValue,
@@ -119,7 +121,7 @@ const SellSection = ({
               );
             })}
 
-            {(() => {
+            {isAdmin && (() => {
               const mKey = `${m.id}_margin`;
               const margin = margins[m.id] ?? 4;
               const isEditingMargin = editingKey === mKey;

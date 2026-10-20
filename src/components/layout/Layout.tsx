@@ -28,6 +28,7 @@ export interface LayoutContext {
   exchangeOnline: boolean | null;
   goldHistory: number[];
   silverHistory: number[];
+  isAdmin: boolean;
   editingKey: string | null;
   editValue: string;
   setEditValue: (v: string) => void;
@@ -112,6 +113,7 @@ const Layout = () => {
     exchangeOnline,
     goldHistory,
     silverHistory,
+    isAdmin,
     editingKey,
     editValue,
     setEditValue,
